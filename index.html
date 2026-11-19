@@ -3,218 +3,310 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Étude UX Design — Application de Livraison CMC Rabat</title>
+<title>CMC Delivery — Conception UX & Wireframes (CMC Rabat)</title>
 <style>
   :root {
-    --bg-teal: #3A9AB2;
-    --bg-teal-dark: #256D80;
-    --card-bg: #FFFFFF;
-    --dark-ink: #102A33;
-    --text-body: #334E58;
-    --text-muted: #627D87;
+    --teal-bg: #3A9AB2;
+    --teal-deep: #246E82;
+    --teal-light: #57B4CB;
+    --card-white: #FFFFFF;
+    --ink-dark: #102A33;
+    --ink-body: #2E4750;
+    --ink-muted: #5F7A84;
     --gold: #D4AF37;
-    --gold-light: #FBF6E6;
-    --accent-grad: linear-gradient(135deg, #5B6CF9 0%, #3A9AB2 55%, #2EB88A 100%);
-    --soft-surface: #F2F7F9;
-    --border-subtle: #DCE8ED;
-    --flow-action: #2EB88A;
-    --flow-screen: #F4C430;
-    --flow-decision: #3A9AB2;
+    --gold-soft: #FBF5E2;
+    --surface: #F2F7F9;
+    --border-soft: #DCE8ED;
+    --action-green: #24A173;
+    --screen-yellow: #F2C12E;
+    --decision-blue: #2B8CBE;
+    --danger-rose: #D94E5A;
     --radius-card: 24px;
-    --shadow-card: 0 24px 60px rgba(16, 42, 51, 0.25);
+    --shadow-main: 0 24px 60px rgba(16, 42, 51, 0.28);
+    --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
   html, body {
     height: 100%;
     overflow: hidden;
     font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-    background: radial-gradient(circle at 15% 15%, #4BB3CC 0%, var(--bg-teal) 55%, var(--bg-teal-dark) 100%);
-    color: var(--dark-ink);
+    background: radial-gradient(circle at 18% 18%, var(--teal-light) 0%, var(--teal-bg) 58%, var(--teal-deep) 100%);
+    color: var(--ink-dark);
     user-select: none;
   }
 
-  /* Motifs géométriques subtils en arrière-plan */
-  .ambient-bg {
+  /* Fond animé avec formes organiques flottantes */
+  .bg-blobs {
     position: fixed;
     inset: 0;
-    pointer-events: none;
     z-index: 0;
+    pointer-events: none;
     overflow: hidden;
   }
-  .ambient-bg::before, .ambient-bg::after {
-    content: "";
+  .blob {
     position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.07);
+    border-radius: 44% 56% 62% 38% / 41% 45% 55% 59%;
+    background: rgba(255, 255, 255, 0.08);
+    animation: floatBlob 14s ease-in-out infinite alternate;
   }
-  .ambient-bg::before { width: 520px; height: 520px; top: -160px; right: -120px; }
-  .ambient-bg::after { width: 420px; height: 420px; bottom: -140px; left: -100px; }
+  .blob-1 {
+    width: 460px;
+    height: 460px;
+    top: -120px;
+    right: -90px;
+    animation-duration: 16s;
+  }
+  .blob-2 {
+    width: 360px;
+    height: 360px;
+    bottom: -100px;
+    left: -80px;
+    animation-duration: 13s;
+    animation-delay: -3s;
+  }
+  .blob-3 {
+    width: 240px;
+    height: 240px;
+    top: 38%;
+    left: 48%;
+    background: rgba(212, 175, 55, 0.08);
+    animation-duration: 18s;
+    animation-delay: -6s;
+  }
 
-  /* Barre supérieure */
+  @keyframes floatBlob {
+    0% {
+      transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+      border-radius: 44% 56% 62% 38% / 41% 45% 55% 59%;
+    }
+    50% {
+      transform: translate3d(28px, -24px, 0) rotate(12deg) scale(1.05);
+      border-radius: 58% 42% 39% 61% / 54% 37% 63% 46%;
+    }
+    100% {
+      transform: translate3d(-20px, 22px, 0) rotate(-10deg) scale(0.97);
+      border-radius: 48% 52% 55% 45% / 42% 58% 42% 58%;
+    }
+  }
+
+  /* Barre de progression tout en haut */
+  .top-progress-wrap {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: rgba(16, 42, 51, 0.25);
+    z-index: 30;
+  }
+  .top-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--gold), #FFE07D);
+    transition: width 0.55s var(--ease-smooth);
+  }
+
+  /* Barre supérieure de contrôles */
   .topbar {
     position: relative;
-    z-index: 10;
-    height: 64px;
-    padding: 0 36px;
+    z-index: 20;
+    height: 62px;
+    padding: 0 32px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     color: #fff;
+    gap: 12px;
   }
-  .brand-pill {
+  .brand-badge {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 0.4px;
-    background: rgba(16, 42, 51, 0.22);
-    padding: 8px 16px;
+    background: rgba(16, 42, 51, 0.28);
+    padding: 7px 15px;
     border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
     backdrop-filter: blur(6px);
   }
-  .brand-dot {
+  .pulse-dot {
     width: 9px;
     height: 9px;
     border-radius: 50%;
     background: var(--gold);
+    animation: pulseGlow 2.2s infinite;
   }
-  .top-actions {
+  @keyframes pulseGlow {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.35); opacity: 0.65; }
+  }
+
+  .ctrl-group {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
+    flex-wrap: wrap;
   }
-  .slide-counter {
-    font-size: 13px;
-    font-weight: 700;
+  .slide-pill {
     background: rgba(255, 255, 255, 0.16);
-    padding: 7px 14px;
+    padding: 6px 13px;
     border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 800;
   }
-  .top-btn {
+  .ctrl-btn {
     background: rgba(255, 255, 255, 0.18);
-    border: 1px solid rgba(255, 255, 255, 0.35);
     color: #fff;
-    padding: 7px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.36);
+    padding: 6px 14px;
     border-radius: 999px;
-    font-size: 13px;
+    font-size: 12.5px;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: all 0.22s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
   }
-  .top-btn:hover {
+  .ctrl-btn:hover {
     background: #fff;
-    color: var(--dark-ink);
+    color: var(--ink-dark);
+    transform: translateY(-1px);
   }
-  .top-btn.gold-btn {
+  .ctrl-btn.sommaire-btn {
     background: var(--gold);
     border-color: var(--gold);
-    color: var(--dark-ink);
+    color: var(--ink-dark);
+    font-weight: 800;
   }
-  .top-btn.gold-btn:hover {
-    background: #e8c348;
+  .ctrl-btn.sommaire-btn:hover {
+    background: #F4CE4E;
   }
 
   /* Scène principale */
-  .viewport {
+  .stage-wrap {
     position: relative;
-    z-index: 5;
-    height: calc(100vh - 132px);
+    z-index: 10;
+    height: calc(100vh - 128px);
+    padding: 4px 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 36px;
-    perspective: 1600px;
+    perspective: 1700px;
   }
 
   .slide-card {
     width: 100%;
-    max-width: 1260px;
+    max-width: 1280px;
     height: 100%;
-    max-height: 700px;
-    background: var(--card-bg);
+    max-height: 705px;
+    background: var(--card-white);
     border-radius: var(--radius-card);
-    box-shadow: var(--shadow-card);
-    padding: 36px 46px;
+    box-shadow: var(--shadow-main);
+    padding: 28px 38px;
     display: flex;
     flex-direction: column;
-    position: relative;
     overflow: hidden;
     transform-style: preserve-3d;
-    animation: slideMorphIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   }
 
-  .slide-card.prev-anim {
-    animation: slideMorphPrev 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  .slide-card.anim-next {
+    animation: morphNext 0.68s var(--ease-smooth) forwards;
+  }
+  .slide-card.anim-prev {
+    animation: morphPrev 0.68s var(--ease-smooth) forwards;
+  }
+  .slide-card.anim-replay {
+    animation: replayPop 0.55s var(--ease-smooth) forwards;
   }
 
-  @keyframes slideMorphIn {
+  @keyframes morphNext {
     0% {
       opacity: 0;
-      transform: translateX(70px) rotateY(-8deg) scale(0.95);
+      transform: translate3d(75px, 12px, -80px) rotateY(-8deg) scale(0.95);
     }
     100% {
       opacity: 1;
-      transform: translateX(0) rotateY(0deg) scale(1);
+      transform: translate3d(0, 0, 0) rotateY(0deg) scale(1);
     }
   }
-
-  @keyframes slideMorphPrev {
+  @keyframes morphPrev {
     0% {
       opacity: 0;
-      transform: translateX(-70px) rotateY(8deg) scale(0.95);
+      transform: translate3d(-75px, 12px, -80px) rotateY(8deg) scale(0.95);
     }
     100% {
       opacity: 1;
-      transform: translateX(0) rotateY(0deg) scale(1);
+      transform: translate3d(0, 0, 0) rotateY(0deg) scale(1);
+    }
+  }
+  @keyframes replayPop {
+    0% { transform: scale(0.985); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* Cascade d'apparition des éléments internes */
+  .stagger-item {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: cascadeUp 0.55s var(--ease-smooth) forwards;
+  }
+  @keyframes cascadeUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 
   /* En-tête de slide */
-  .slide-header {
+  .slide-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
-    padding-bottom: 14px;
-    border-bottom: 1.5px solid var(--border-subtle);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    border-bottom: 1.5px solid var(--border-soft);
     flex-shrink: 0;
   }
-  .header-left {
+  .slide-head-left {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
   }
-  .num-badge {
+  .gold-num {
     background: var(--gold);
-    color: var(--dark-ink);
+    color: var(--ink-dark);
     font-weight: 900;
     font-size: 16px;
-    padding: 8px 14px;
+    padding: 7px 13px;
     border-radius: 12px;
-    letter-spacing: 0.5px;
     box-shadow: 0 6px 14px rgba(212, 175, 55, 0.3);
   }
   .slide-kicker {
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 1.2px;
-    color: var(--bg-teal);
+    letter-spacing: 1.15px;
+    color: var(--teal-bg);
   }
   .slide-title {
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--dark-ink);
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--ink-dark);
     line-height: 1.15;
   }
-  .dark-icon-circle {
-    width: 46px;
-    height: 46px;
+  .dark-badge-icon {
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
-    background: var(--dark-ink);
+    background: var(--ink-dark);
     color: var(--gold);
     display: flex;
     align-items: center;
@@ -229,59 +321,56 @@
     padding-right: 4px;
   }
   .slide-body::-webkit-scrollbar { width: 6px; }
-  .slide-body::-webkit-scrollbar-thumb { background: #CBDCE2; border-radius: 10px; }
+  .slide-body::-webkit-scrollbar-thumb { background: #C8D9E0; border-radius: 10px; }
 
-  /* Grilles & Cartes internes */
-  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  /* Grilles & Blocs */
+  .g2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .g3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .g4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
 
-  .panel {
-    background: var(--soft-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: 18px;
-    padding: 20px;
+  .box {
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    padding: 16px;
   }
-  .panel.dark-panel {
-    background: var(--dark-ink);
+  .box-dark {
+    background: var(--ink-dark);
     color: #fff;
     border: none;
   }
-  .panel.gold-panel {
-    background: var(--gold-light);
-    border: 1px solid rgba(212, 175, 55, 0.45);
+  .box-gold {
+    background: var(--gold-soft);
+    border: 1px solid rgba(212, 175, 55, 0.5);
   }
-  .panel h3 {
-    font-size: 16px;
+  .box h3 {
+    font-size: 15px;
     font-weight: 800;
-    margin-bottom: 8px;
-    color: var(--dark-ink);
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    color: var(--ink-dark);
+    margin-bottom: 6px;
   }
-  .panel.dark-panel h3 { color: var(--gold); }
-  .panel p, .panel li {
-    font-size: 14px;
-    line-height: 1.5;
-    color: var(--text-body);
+  .box-dark h3 { color: var(--gold); }
+  .box p, .box li {
+    font-size: 13.5px;
+    line-height: 1.48;
+    color: var(--ink-body);
   }
-  .panel.dark-panel p { color: #E2EEF2; }
-  .panel ul { padding-left: 18px; }
+  .box-dark p, .box-dark li { color: #E3EFF3; }
+  .box ul { padding-left: 16px; }
 
-  /* SLIDE 0 : COUVERTURE & SOMMAIRE */
-  .cover-layout {
+  /* SLIDE 0 : SOMMAIRE */
+  .som-layout {
     display: grid;
-    grid-template-columns: 1.05fr 1.25fr;
-    gap: 28px;
+    grid-template-columns: 1fr 1.45fr;
+    gap: 24px;
     height: 100%;
     align-items: center;
   }
-  .hero-box {
-    background: var(--dark-ink);
+  .som-hero {
+    background: var(--ink-dark);
     color: #fff;
-    border-radius: 22px;
-    padding: 32px;
+    border-radius: 20px;
+    padding: 26px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -289,1347 +378,1488 @@
     position: relative;
     overflow: hidden;
   }
-  .hero-box::after {
+  .som-hero::after {
     content: "";
     position: absolute;
-    width: 240px;
-    height: 240px;
+    width: 220px;
+    height: 220px;
     border-radius: 50%;
-    background: var(--accent-grad);
-    opacity: 0.22;
-    bottom: -70px;
-    right: -70px;
+    background: linear-gradient(135deg, var(--teal-bg), var(--gold));
+    opacity: 0.18;
+    bottom: -60px;
+    right: -60px;
   }
-  .hero-tag {
-    display: inline-block;
-    background: rgba(212, 175, 55, 0.2);
-    color: var(--gold);
-    border: 1px solid rgba(212, 175, 55, 0.45);
-    padding: 6px 14px;
-    border-radius: 999px;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-  .hero-title {
-    font-size: 32px;
-    font-weight: 900;
-    line-height: 1.18;
-    margin-bottom: 14px;
-  }
-  .hero-sub {
-    font-size: 15px;
-    color: #B8D4DE;
-    line-height: 1.55;
-    margin-bottom: 20px;
-  }
-  .actor-chips {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .actor-chip {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 6px 12px;
-    border-radius: 10px;
-    font-size: 12.5px;
-    font-weight: 700;
-    color: #fff;
-  }
-  .sommaire-grid {
+  .som-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 11px;
+    gap: 10px;
   }
-  .som-item {
+  .som-card {
     display: flex;
     align-items: center;
-    gap: 12px;
-    background: var(--soft-surface);
-    border: 1px solid var(--border-subtle);
-    padding: 11px 14px;
+    gap: 11px;
+    background: var(--surface);
+    border: 1.5px solid var(--border-soft);
     border-radius: 14px;
+    padding: 10px 13px;
     cursor: pointer;
-    transition: all 0.2s ease;
     text-align: left;
+    transition: all 0.22s var(--ease-smooth);
   }
-  .som-item:hover {
-    transform: translateY(-2px);
-    border-color: var(--bg-teal);
-    background: #E8F4F8;
+  .som-card:hover {
+    transform: translateY(-2px) scale(1.01);
+    border-color: var(--teal-bg);
+    background: #E7F4F8;
   }
-  .som-num {
+  .som-card-num {
     background: var(--gold);
-    color: var(--dark-ink);
+    color: var(--ink-dark);
     font-weight: 900;
     font-size: 12px;
     padding: 5px 8px;
     border-radius: 8px;
     flex-shrink: 0;
   }
-  .som-label {
-    font-size: 13.5px;
-    font-weight: 700;
-    color: var(--dark-ink);
+  .som-card-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--ink-dark);
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
   }
-
-  /* SLIDE 02 : RECHERCHE QUALITATIVE */
-  .qa-item {
-    background: #fff;
-    border-radius: 12px;
-    padding: 11px 13px;
-    margin-top: 10px;
-    border-left: 4px solid var(--bg-teal);
-  }
-  .qa-q {
-    font-size: 12.5px;
-    font-weight: 800;
-    color: var(--dark-ink);
-    margin-bottom: 4px;
-  }
-  .qa-a {
+  .som-card-title {
     font-size: 13px;
-    color: var(--text-body);
-    font-style: italic;
+    font-weight: 800;
+    color: var(--ink-dark);
   }
 
-  /* SLIDE 03 : RECHERCHE QUANTITATIVE (%) */
-  .stat-card {
-    background: var(--soft-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: 18px;
-    padding: 18px;
+  /* SLIDE 02 : QUALITATIF */
+  .qa-box {
+    background: #fff;
+    border-radius: 10px;
+    padding: 9px 11px;
+    margin-top: 8px;
+    border-left: 3.5px solid var(--teal-bg);
+  }
+  .qa-q { font-size: 12px; font-weight: 800; color: var(--ink-dark); margin-bottom: 3px; }
+  .qa-a { font-size: 12.5px; color: var(--ink-body); font-style: italic; }
+
+  /* SLIDE 03 : QUANTITATIF (%) */
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    border-radius: 16px;
+    padding: 15px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
   }
-  .stat-top {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    margin-bottom: 8px;
-  }
-  .stat-pct {
-    font-size: 38px;
+  .kpi-top { display: flex; justify-content: space-between; align-items: baseline; }
+  .kpi-num {
+    font-size: 36px;
     font-weight: 900;
-    background: var(--accent-grad);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--teal-deep);
   }
-  .stat-tag {
+  .kpi-badge {
+    background: var(--ink-dark);
+    color: var(--gold);
     font-size: 11px;
     font-weight: 800;
-    background: var(--dark-ink);
-    color: var(--gold);
-    padding: 4px 9px;
+    padding: 3px 9px;
     border-radius: 999px;
   }
-  .stat-bar-bg {
+  .kpi-bar-track {
     width: 100%;
-    height: 12px;
+    height: 11px;
     background: #DCE8ED;
     border-radius: 999px;
     overflow: hidden;
-    margin: 10px 0;
+    margin: 9px 0;
   }
-  .stat-bar-fill {
+  .kpi-bar-fill {
     height: 100%;
     width: 0%;
-    background: var(--accent-grad);
+    background: linear-gradient(90deg, var(--teal-bg), var(--action-green));
     border-radius: 999px;
-    transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .stat-desc {
-    font-size: 13.5px;
-    font-weight: 600;
-    color: var(--dark-ink);
-  }
-  .stat-sub {
-    font-size: 12px;
-    color: var(--text-muted);
-    margin-top: 4px;
+    transition: width 1.15s var(--ease-smooth);
   }
 
-  /* SLIDE 04 : PERSONA */
-  .persona-layout {
-    display: grid;
-    grid-template-columns: 290px 1fr;
-    gap: 22px;
-    height: 100%;
+  /* SLIDE 04 : PERSONA & EMPATHY MAP */
+  .view-switch {
+    display: inline-flex;
+    background: var(--surface);
+    padding: 4px;
+    border-radius: 999px;
+    border: 1px solid var(--border-soft);
+    gap: 4px;
   }
-  .persona-left {
-    background: var(--dark-ink);
+  .view-tab {
+    border: none;
+    background: transparent;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--ink-body);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .view-tab.active {
+    background: var(--ink-dark);
+    color: var(--gold);
+  }
+
+  .persona-grid {
+    display: grid;
+    grid-template-columns: 270px 1fr;
+    gap: 18px;
+  }
+  .persona-card-left {
+    background: var(--ink-dark);
     color: #fff;
-    border-radius: 20px;
-    padding: 20px;
+    border-radius: 18px;
+    padding: 18px;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
-  .persona-avatar {
-    width: 112px;
-    height: 112px;
+  .avatar-ring {
+    width: 98px;
+    height: 98px;
     border-radius: 50%;
     border: 3px solid var(--gold);
     overflow: hidden;
-    background: #1C424F;
+    background: #1B4350;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     position: relative;
   }
-  .persona-avatar img {
+  .avatar-ring img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     position: relative;
     z-index: 2;
   }
-  .persona-name { font-size: 20px; font-weight: 800; color: #fff; }
-  .persona-role { font-size: 13px; color: var(--gold); font-weight: 700; margin: 4px 0 12px; }
-  .persona-quote {
-    background: rgba(255, 255, 255, 0.09);
-    padding: 12px;
+
+  /* Carte d'Empathie Radiale SVG + 6 capsules */
+  .empathy-stage {
+    position: relative;
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 10px;
+    align-items: center;
+    min-height: 430px;
+  }
+  .empathy-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    z-index: 3;
+  }
+  .empathy-capsules-wrap {
+    position: relative;
+    height: 430px;
+  }
+  .empathy-svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .dash-arrow {
+    stroke-dasharray: 8 6;
+    stroke-dashoffset: 180;
+    transition: stroke-dashoffset 1.2s var(--ease-smooth);
+  }
+  .dash-arrow.drawn {
+    stroke-dashoffset: 0;
+  }
+  .emp-capsule {
+    position: absolute;
+    width: 46%;
+    background: #fff;
+    border-radius: 14px;
+    padding: 10px 13px;
+    border: 2px solid var(--border-soft);
+    box-shadow: 0 8px 18px rgba(16, 42, 51, 0.08);
+    z-index: 2;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.5s var(--ease-smooth);
+  }
+  .emp-capsule.show {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .emp-capsule h4 {
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .emp-capsule p {
+    font-size: 11.5px;
+    line-height: 1.35;
+    color: var(--ink-body);
+  }
+  .cap-dit { top: 8px; left: 4%; border-color: var(--teal-bg); }
+  .cap-dit h4 { color: var(--teal-deep); }
+  .cap-pense { top: 8px; right: 2%; border-color: var(--decision-blue); }
+  .cap-pense h4 { color: var(--decision-blue); }
+  .cap-voit { top: 155px; left: 4%; border-color: var(--gold); }
+  .cap-voit h4 { color: #8A6D14; }
+  .cap-ressent { top: 155px; right: 2%; border-color: var(--action-green); }
+  .cap-ressent h4 { color: #167A55; }
+  .cap-pains { bottom: 8px; left: 4%; border-color: var(--danger-rose); background: #FFF5F6; }
+  .cap-pains h4 { color: var(--danger-rose); }
+  .cap-gains { bottom: 8px; right: 2%; border-color: var(--action-green); background: #F1FBF7; }
+  .cap-gains h4 { color: #167A55; }
+
+  /* SLIDE 07 : CARTE D'EXPÉRIENCE (CHEVRONS + COURBE MIXTE) */
+  .chevron-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin: 8px 0 10px;
+  }
+  .chevron-step {
+    background: var(--ink-dark);
+    color: #fff;
+    padding: 8px 14px;
+    clip-path: polygon(0% 0%, 92% 0%, 100% 50%, 92% 100%, 0% 100%, 7% 50%);
+    font-size: 12.5px;
+    font-weight: 800;
+    text-align: center;
+  }
+  .chevron-step.gold-chev {
+    background: var(--gold);
+    color: var(--ink-dark);
+  }
+  .exp-matrix-line {
+    display: grid;
+    grid-template-columns: 118px repeat(4, 1fr);
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+  .row-label-box {
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 8px;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--ink-dark);
+    text-align: center;
+  }
+  .cell-mini {
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 8px 10px;
+    font-size: 11.5px;
+    line-height: 1.35;
+    color: var(--ink-body);
+  }
+  .trace-path {
+    stroke-dasharray: 900;
+    stroke-dashoffset: 900;
+    transition: stroke-dashoffset 1.5s var(--ease-smooth);
+  }
+  .trace-path.drawn {
+    stroke-dashoffset: 0;
+  }
+
+  /* SLIDE 08 : PARCOURS UTILISATEUR (5 CHEVRONS + ÉMOJIS + COURBE) */
+  .journey-meta-bar {
+    display: flex;
+    justify-content: space-between;
+    background: var(--ink-dark);
+    color: #fff;
+    padding: 8px 16px;
     border-radius: 12px;
     font-size: 12.5px;
-    font-style: italic;
-    color: #DCEEF4;
-    line-height: 1.45;
-  }
-  .persona-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 14px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border-subtle);
-  }
-  .p-tag {
-    background: var(--dark-ink);
-    color: #fff;
-    font-size: 12px;
     font-weight: 700;
-    padding: 6px 13px;
-    border-radius: 999px;
+    margin-bottom: 10px;
   }
-  .p-tag.gold { background: var(--gold); color: var(--dark-ink); }
-
-  /* SLIDE 05 : OBJECTIFS & SOLUTIONS */
-  .obj-row {
-    display: grid;
-    grid-template-columns: 1fr 48px 1fr;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-  .arrow-circle {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    background: var(--gold);
-    color: var(--dark-ink);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 900;
-    margin: 0 auto;
-  }
-
-  /* SLIDE 07 : CARTE D'EXPÉRIENCE */
-  .exp-grid {
+  .journey-meta-bar span b { color: var(--gold); }
+  .chev5 {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 12px;
+    gap: 6px;
+    margin-bottom: 8px;
   }
-  .exp-col {
-    background: var(--soft-surface);
-    border: 1px solid var(--border-subtle);
-    border-radius: 16px;
-    padding: 14px;
+  .j-grid-row {
+    display: grid;
+    grid-template-columns: 140px repeat(5, 1fr);
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 7px;
+  }
+  .j-left-label {
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 8px;
+    font-size: 11.5px;
+    font-weight: 900;
+    color: var(--ink-dark);
+    text-align: center;
+  }
+  .mood-row {
+    display: grid;
+    grid-template-columns: 140px 1fr;
+    gap: 6px;
+    align-items: center;
+    margin-bottom: 7px;
+  }
+  .mood-faces {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-  }
-  .exp-step {
-    font-size: 11px;
-    font-weight: 900;
-    color: var(--bg-teal);
-    text-transform: uppercase;
-  }
-  .exp-emoji {
-    font-size: 26px;
-    margin: 8px 0;
-    text-align: center;
-  }
-  .emotion-svg {
-    width: 100%;
     height: 76px;
-    background: #fff;
-    border-radius: 14px;
-    border: 1px solid var(--border-subtle);
-    margin: 12px 0;
-    padding: 6px;
+    font-size: 17px;
+    padding-left: 6px;
   }
 
   /* SLIDE 09 : USER FLOW */
   .flow-legend {
     display: flex;
-    gap: 18px;
+    gap: 20px;
     align-items: center;
-    margin-bottom: 12px;
     flex-wrap: wrap;
+    margin-bottom: 10px;
   }
-  .leg-item { display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
-  .shape-circle { width: 16px; height: 16px; border-radius: 50%; background: var(--flow-action); }
-  .shape-rect { width: 20px; height: 14px; border-radius: 4px; background: var(--flow-screen); }
-  .shape-diamond { width: 14px; height: 14px; background: var(--flow-decision); transform: rotate(45deg); }
+  .leg-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    font-weight: 800;
+  }
+  .dot-green { width: 16px; height: 16px; border-radius: 50%; background: var(--action-green); display: inline-block; }
+  .rect-yellow { width: 22px; height: 14px; border-radius: 4px; background: var(--screen-yellow); border: 1.5px solid #B58900; display: inline-block; }
+  .diamond-blue { width: 14px; height: 14px; background: var(--decision-blue); transform: rotate(45deg); display: inline-block; }
 
-  .flow-canvas {
-    background: #F8FBFC;
+  .flow-box-area {
+    background: #F8FBFD;
     border: 2px dashed #BFD6DF;
-    border-radius: 18px;
-    padding: 16px;
-    position: relative;
+    border-radius: 16px;
+    padding: 14px;
   }
-  .flow-track {
+  .flow-line {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 6px;
-    margin-bottom: 14px;
+    gap: 7px;
     flex-wrap: wrap;
+    margin-bottom: 11px;
   }
-  .node-action {
-    background: #DDF7EE;
-    border: 2px solid var(--flow-action);
-    color: #0E4D38;
-    padding: 7px 12px;
+  .f-circle {
+    background: #E2F7EF;
+    border: 2px solid var(--action-green);
+    color: #0B4D35;
+    padding: 6px 12px;
     border-radius: 999px;
-    font-size: 12px;
+    font-size: 11.5px;
     font-weight: 800;
   }
-  .node-screen {
-    background: #FEF6D8;
-    border: 2px solid var(--flow-screen);
-    color: #5C4500;
-    padding: 7px 11px;
-    border-radius: 8px;
-    font-size: 12px;
+  .f-rect {
+    background: #FFF6D6;
+    border: 2px solid var(--screen-yellow);
+    color: #594200;
+    padding: 6px 11px;
+    border-radius: 7px;
+    font-size: 11.5px;
     font-weight: 800;
   }
-  .node-decision {
-    background: #E0F3F8;
-    border: 2px solid var(--flow-decision);
-    color: #102A33;
-    padding: 7px 12px;
-    border-radius: 6px;
-    font-size: 12px;
+  .f-diamond {
+    background: #E1F2FA;
+    border: 2px solid var(--decision-blue);
+    color: #0C3B54;
+    padding: 6px 11px;
+    border-radius: 5px;
+    font-size: 11.5px;
     font-weight: 800;
-    box-shadow: inset 0 0 0 2px #fff;
+    outline: 2px solid #fff;
   }
-  .f-arrow { color: var(--text-muted); font-weight: 900; }
+  .f-arr { font-weight: 900; color: var(--ink-muted); font-size: 13px; }
 
-  /* SLIDE 10 : PROTOTYPE & WIREFRAMES */
-  .proto-wrapper {
+  /* SLIDE 10 : WIREFRAMES LOW-FI */
+  .wf-container {
     display: grid;
-    grid-template-columns: 240px 1fr;
-    gap: 24px;
-    height: 100%;
+    grid-template-columns: 230px 1fr;
+    gap: 20px;
     align-items: center;
   }
-  .screen-selector {
+  .wf-menu {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
   }
-  .scr-btn {
-    background: var(--soft-surface);
-    border: 1.5px solid var(--border-subtle);
-    padding: 12px 14px;
-    border-radius: 14px;
+  .wf-tab-btn {
+    background: var(--surface);
+    border: 1.5px solid var(--border-soft);
+    padding: 10px 12px;
+    border-radius: 12px;
     text-align: left;
     cursor: pointer;
     transition: all 0.2s ease;
   }
-  .scr-btn.active {
-    background: var(--dark-ink);
+  .wf-tab-btn.active {
+    background: var(--ink-dark);
     color: #fff;
-    border-color: var(--dark-ink);
+    border-color: var(--ink-dark);
   }
-  .scr-btn small { display: block; font-size: 11px; opacity: 0.75; }
-  .scr-btn strong { font-size: 13.5px; }
+  .wf-tab-btn small { display: block; font-size: 10.5px; opacity: 0.75; }
+  .wf-tab-btn strong { font-size: 12.5px; }
 
-  .proto-stage {
+  .wf-display {
     display: grid;
-    grid-template-columns: 270px 1fr;
-    gap: 24px;
+    grid-template-columns: 265px 1fr;
+    gap: 22px;
     align-items: center;
-    background: var(--soft-surface);
-    border-radius: 20px;
-    padding: 20px 26px;
-    border: 1px solid var(--border-subtle);
+    background: var(--surface);
+    border: 1px solid var(--border-soft);
+    border-radius: 18px;
+    padding: 16px 22px;
   }
-  .phone-frame {
+  .lofi-phone {
     width: 255px;
     height: 445px;
-    background: #fff;
-    border: 3px solid var(--dark-ink);
-    border-radius: 28px;
-    padding: 14px;
-    box-shadow: 0 14px 30px rgba(16, 42, 51, 0.16);
+    background: #FFFFFF;
+    border: 2.5px solid #222222;
+    border-radius: 26px;
+    padding: 13px;
+    color: #222222;
+    font-family: Arial, Helvetica, sans-serif;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    position: relative;
-    overflow: hidden;
+    box-shadow: 6px 6px 0px #D4DFE4;
+    animation: fadeScreen 0.35s ease;
   }
-  .phone-frame img.real-screen {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 5;
-    background: #fff;
+  @keyframes fadeScreen {
+    from { opacity: 0.3; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
   }
-  .wf-box-x {
-    border: 1.5px solid #8A9BA3;
-    background: #F1F5F7;
+  .x-box {
+    border: 1.5px solid #777;
+    background: #F3F3F3;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
   }
-  .wf-box-x::before, .wf-box-x::after {
-    content: "";
+  .x-box svg {
     position: absolute;
+    inset: 0;
     width: 100%;
-    height: 1px;
-    background: #9FB0B8;
+    height: 100%;
   }
-  .wf-box-x::before { transform: rotate(28deg); }
-  .wf-box-x::after { transform: rotate(-28deg); }
 
-  /* Barre inférieure de navigation */
+  /* Barre inférieure */
   .bottombar {
     position: relative;
-    z-index: 10;
-    height: 68px;
-    padding: 0 36px;
+    z-index: 20;
+    height: 62px;
+    padding: 0 32px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     color: #fff;
   }
-  .progress-track {
-    flex: 1;
-    max-width: 460px;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.25);
-    border-radius: 999px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    background: var(--gold);
-    width: 0%;
-    transition: width 0.4s ease;
-  }
-  .nav-buttons {
-    display: flex;
-    gap: 12px;
-  }
+  .nav-group { display: flex; gap: 12px; }
   .nav-btn {
     background: #fff;
-    color: var(--dark-ink);
+    color: var(--ink-dark);
     border: none;
-    padding: 10px 22px;
+    padding: 9px 20px;
     border-radius: 999px;
     font-weight: 800;
-    font-size: 14px;
+    font-size: 13.5px;
     cursor: pointer;
-    box-shadow: 0 8px 20px rgba(16, 42, 51, 0.22);
+    box-shadow: 0 8px 18px rgba(16, 42, 51, 0.22);
     transition: transform 0.2s ease, opacity 0.2s ease;
   }
   .nav-btn:hover:not(:disabled) { transform: translateY(-2px); }
   .nav-btn:disabled { opacity: 0.4; cursor: default; }
 
-  /* Modal Zoom Image HD */
-  .zoom-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(16, 42, 51, 0.88);
-    z-index: 100;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 30px;
-  }
-  .zoom-modal.open { display: flex; }
-  .zoom-content {
-    background: #fff;
-    padding: 20px;
-    border-radius: 20px;
-    max-width: 92vw;
-    max-height: 90vh;
-    overflow: auto;
-    position: relative;
-  }
-  .close-zoom {
-    position: sticky;
-    top: 0;
-    float: right;
-    background: var(--dark-ink);
-    color: #fff;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 999px;
-    font-weight: 800;
-    cursor: pointer;
+  /* Impression / Export PDF */
+  @media print {
+    body { overflow: visible; background: #fff; }
+    .bg-blobs, .top-progress-wrap, .topbar, .bottombar { display: none !important; }
+    .stage-wrap { height: auto; padding: 0; }
+    .slide-card { max-height: none; box-shadow: none; border: 1px solid #ccc; page-break-after: always; }
   }
 
-  @media (max-width: 960px) {
-    .cover-layout, .persona-layout, .proto-wrapper, .proto-stage, .grid-2, .grid-3, .grid-4, .exp-grid {
+  @media (max-width: 980px) {
+    .som-layout, .persona-grid, .wf-container, .wf-display, .g2, .g3, .g4 {
       grid-template-columns: 1fr;
     }
-    .slide-card { padding: 22px; }
+    .slide-card { padding: 18px; }
+    .empathy-capsules-wrap { height: auto; position: static; display: flex; flex-direction: column; gap: 8px; }
+    .emp-capsule { position: static; width: 100%; opacity: 1; transform: none; }
+    .empathy-svg { display: none; }
   }
 </style>
 </head>
 <body>
 
-<div class="ambient-bg"></div>
+<div class="bg-blobs">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
 
-<!-- Barre supérieure -->
+<div class="top-progress-wrap">
+  <div class="top-progress-bar" id="topProgressBar"></div>
+</div>
+
 <header class="topbar">
-  <div class="brand-pill">
-    <span class="brand-dot"></span>
-    <span>CMC RABAT · ÉTUDE UX DESIGN — LIVRAISON CAMPUS</span>
+  <div class="brand-badge">
+    <span class="pulse-dot"></span>
+    <span>CMC RABAT · CONCEPTION UX (LOW-FI) — LIVRAISON REPAS</span>
   </div>
-  <div class="top-actions">
-    <span class="slide-counter" id="slideCounter">00 / 10</span>
-    <button class="top-btn gold-btn" onclick="goToSlide(0)">Sommaire</button>
-    <button class="top-btn" onclick="toggleFullscreen()">Plein écran</button>
+  <div class="ctrl-group">
+    <span class="slide-pill" id="slideIndicator">Slide 0 / 10</span>
+    <button class="ctrl-btn sommaire-btn" onclick="goToSlide(0)">Sommaire</button>
+    <button class="ctrl-btn" onclick="replayCurrentAnimation()">Rejouer l'animation</button>
+    <button class="ctrl-btn" onclick="window.print()">Imprimer / Exporter PDF</button>
   </div>
 </header>
 
-<!-- Scène principale -->
-<main class="viewport">
-  <section class="slide-card" id="slideCard"></section>
+<main class="stage-wrap">
+  <section class="slide-card anim-next" id="slideCard"></section>
 </main>
 
-<!-- Barre inférieure -->
 <footer class="bottombar">
-  <div style="font-size:12.5px;opacity:.9;font-weight:600">Navigation : Flèches ← → ou boutons</div>
-  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-  <div class="nav-buttons">
+  <div style="font-size:12px;font-weight:700;opacity:0.9">Clavier : ← / → pour naviguer · R pour rejouer</div>
+  <div class="nav-group">
     <button class="nav-btn" id="prevBtn" onclick="prevSlide()">← Précédent</button>
     <button class="nav-btn" id="nextBtn" onclick="nextSlide()">Suivant →</button>
   </div>
 </footer>
 
-<!-- Modal Zoom HD -->
-<div class="zoom-modal" id="zoomModal" onclick="if(event.target===this) closeZoom()">
-  <div class="zoom-content" id="zoomBody"></div>
-</div>
-
 <script>
-const ICONS = {
-  target: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
-  mic: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>`,
-  chart: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>`,
-  user: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
-  bulb: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>`,
-  clock: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
-  heart: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
-  route: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg>`,
-  flow: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="15" width="6" height="6" rx="1"/><path d="M9 6h3v12h3"/></svg>`,
-  phone: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>`
+const SVG_ICONS = {
+  alert: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="14"/><circle cx="12" cy="19" r="1.4" fill="currentColor"/></svg>`,
+  interview: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>`,
+  survey: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg>`,
+  persona: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>`,
+  solution: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>`,
+  scenario: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>`,
+  map: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>`,
+  journey: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="6" cy="18" r="3"/><circle cx="18" cy="6" r="3"/><path d="M9 18h6a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6"/></svg>`,
+  flow: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="4" width="6" height="5" rx="1"/><rect x="15" y="15" width="6" height="5" rx="1"/><path d="M9 6.5h3v11h3"/></svg>`,
+  wireframe: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="9" x2="9" y2="21"/></svg>`
 };
 
-/* Données des 5 écrans du Prototype (Slide 10) */
-const PROTO_SCREENS = [
+const xBoxLowFi = (w, h, text = "") => `
+  <div class="x-box" style="width:${w};height:${h};flex-shrink:0">
+    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+      <line x1="0" y1="0" x2="100" y2="100" stroke="#888" stroke-width="1.5"/>
+      <line x1="100" y1="0" x2="0" y2="100" stroke="#888" stroke-width="1.5"/>
+    </svg>
+    ${text ? `<span style="position:relative;z-index:2;background:#fff;border:1px solid #333;padding:2px 5px;font-size:9px;font-weight:800">${text}</span>` : ""}
+  </div>`;
+
+const WIREFRAMES = [
   {
-    id: 1,
-    step: "Écran 01 / 05",
-    name: "Connexion CMC",
-    img: "screen-1-login.png",
-    desc: "Authentification réservée aux stagiaires de la CMC Rabat via leur adresse académique officielle (@cmc.ac.ma).",
-    uxPoints: [
-      "Accès sécurisé et exclusif au campus de Tamesna.",
-      "Proposition de valeur immédiate : « Votre pause déjeuner, sans attendre ».",
-      "Structure filaire basse fidélité validant la hiérarchie des champs."
+    tag: "Wireframe 1 / 5",
+    title: "1. Connexion CMC",
+    summary: "Authentification réservée aux stagiaires de la CMC Rabat via l'adresse académique (@cmc.ac.ma).",
+    notes: [
+      "Champ Email CMC explicite (prenom.nom@cmc.ac.ma) pour filtrer l'accès au campus.",
+      "Promesse orientée pause déjeuner rapide sans perte de temps.",
+      "Maquette Low-Fi épurée : validation de la structure et de la lisibilité avant toute couleur UI."
     ],
-    wireframeHTML: `
+    screenHtml: `
       <div>
-        <div style="font-size:9px;color:#627D87;font-weight:700">CAMPUS CMC RABAT</div>
-        <div style="font-size:16px;font-weight:900;margin:2px 0 8px">Connexion CMC</div>
-        <div class="wf-box-x" style="width:62px;height:62px;margin:6px auto"></div>
-        <div style="text-align:center;font-weight:800;font-size:13px;margin:6px 0 2px">Votre pause déjeuner,<br>sans attendre.</div>
-        <div style="text-align:center;font-size:9.5px;color:#627D87;margin-bottom:8px">Connectez-vous avec votre compte étudiant.</div>
-        <div style="font-size:10px;font-weight:700">Email académique CMC</div>
-        <div style="border:1.5px solid #8A9BA3;padding:6px;font-size:10px;color:#627D87;margin:3px 0 7px">prenom.nom@cmc.ac.ma</div>
-        <div style="font-size:10px;font-weight:700">Mot de passe</div>
-        <div style="border:1.5px solid #8A9BA3;padding:6px;font-size:10px;color:#627D87;margin:3px 0 6px">••••••••••••</div>
-        <div style="font-size:9.5px;color:#3A9AB2;font-weight:700">Mot de passe oublié ?</div>
+        <div style="font-size:8.5px;color:#666;font-weight:700">CAMPUS CMC RABAT</div>
+        <div style="font-size:15px;font-weight:900;color:#111;margin:2px 0 8px">Connexion CMC</div>
+        <div style="display:flex;justify-content:center;margin:8px 0">${xBoxLowFi("58px", "58px")}</div>
+        <div style="text-align:center;font-size:12.5px;font-weight:800;line-height:1.25">Votre pause déjeuner,<br>sans attendre.</div>
+        <div style="text-align:center;font-size:9px;color:#555;margin:3px 0 9px">Connectez-vous avec votre compte étudiant.</div>
+        <div style="font-size:9.5px;font-weight:700;margin-bottom:2px">Email académique CMC</div>
+        <div style="border:1.5px solid #555;padding:5px 7px;font-size:9.5px;color:#777;margin-bottom:7px">prenom.nom@cmc.ac.ma</div>
+        <div style="font-size:9.5px;font-weight:700;margin-bottom:2px">Mot de passe</div>
+        <div style="border:1.5px solid #555;padding:5px 7px;font-size:9.5px;color:#777;margin-bottom:5px">Saisir votre mot de passe</div>
+        <div style="font-size:9px;color:#444;text-decoration:underline">Mot de passe oublié ?</div>
       </div>
       <div>
-        <div style="background:#102A33;color:#fff;text-align:center;padding:9px;border-radius:8px;font-size:12px;font-weight:800">Se connecter</div>
-        <div style="text-align:center;font-size:9px;color:#627D87;margin-top:6px">CMC Rabat / 1 sur 5</div>
+        <div style="border:1.5px solid #222;background:#E2E2E2;text-align:center;padding:8px;font-size:11px;font-weight:800;color:#111">Se connecter</div>
+        <div style="text-align:center;font-size:8.5px;color:#666;margin-top:5px">CMC Rabat / 1 sur 5</div>
       </div>`
   },
   {
-    id: 2,
-    step: "Écran 02 / 05",
-    name: "Les snacks du campus",
-    img: "screen-2-snacks.png",
-    desc: "Catalogue des snacks et restaurants partenaires à proximité immédiate de la CMC avec délais et frais transparents.",
-    uxPoints: [
-      "Affichage direct du temps de livraison (10–15 min) adapté aux pauses courtes.",
-      "Mise en avant de la bannière « Offres Stagiaires » (menus économiques).",
-      "Comparaison rapide des frais de livraison (0 DH à 5 DH)."
+    tag: "Wireframe 2 / 5",
+    title: "2. Les snacks du campus",
+    summary: "Liste des snacks et restaurants partenaires à proximité avec délai estimé, frais et budget d'entrée.",
+    notes: [
+      "Barre de recherche et encart « Offres Stagiaires » adaptés aux budgets serrés (20–30 DH).",
+      "Affichage clair des délais (10–25 min) pour planifier selon la durée de la pause.",
+      "Mention du retrait groupé pour encourager les commandes à plusieurs."
     ],
-    wireframeHTML: `
+    screenHtml: `
       <div>
-        <div style="font-size:9px;color:#627D87;font-weight:700">CMC RABAT · ACCUEIL</div>
-        <div style="font-size:16px;font-weight:900;margin:2px 0 6px">Les snacks du campus</div>
-        <div style="border:1.5px solid #8A9BA3;padding:5px 8px;font-size:10px;color:#627D87;margin-bottom:7px">Rechercher un snack ou un plat...</div>
-        <div style="background:#FBF6E6;border:1px solid #D4AF37;padding:7px;border-radius:8px;margin-bottom:8px">
-          <div style="font-size:11px;font-weight:800">Offres Stagiaires</div>
-          <div style="font-size:9.5px;color:#627D87">Menus adaptés au budget étudiant.</div>
+        <div style="font-size:8.5px;color:#666;font-weight:700">CMC RABAT / 02</div>
+        <div style="font-size:15px;font-weight:900;color:#111;margin:2px 0 6px">Les snacks du campus</div>
+        <div style="border:1.5px solid #555;padding:5px 7px;font-size:9.5px;color:#777;margin-bottom:7px">Rechercher un snack ou un plat...</div>
+        <div style="border:1.5px solid #444;background:#EFEFEF;padding:6px 8px;margin-bottom:8px">
+          <div style="font-size:10.5px;font-weight:800">Offres Stagiaires</div>
+          <div style="font-size:9px;color:#555">Des menus adaptés au budget étudiant.</div>
         </div>
-        <div style="border:1px solid #BFD6DF;padding:7px;border-radius:8px;display:flex;gap:8px;margin-bottom:6px">
-          <div class="wf-box-x" style="width:40px;height:40px;flex-shrink:0"></div>
-          <div><div style="font-size:11px;font-weight:800">Snack du Campus</div><div style="font-size:9px;color:#627D87">10–15 min · Livraison : 0 DH</div><div style="font-size:10px;font-weight:800">Dès 20 DH</div></div>
+        <div style="font-size:10.5px;font-weight:800;margin-bottom:5px">À proximité de votre pause</div>
+        <div style="border:1.2px solid #666;padding:6px;display:flex;gap:7px;margin-bottom:6px">
+          ${xBoxLowFi("38px", "38px")}
+          <div><div style="font-size:10.5px;font-weight:800">Snack du Campus</div><div style="font-size:8.5px;color:#555">10–15 min · Livraison : 0 DH</div><div style="font-size:10px;font-weight:800">Dès 20 DH</div></div>
         </div>
-        <div style="border:1px solid #BFD6DF;padding:7px;border-radius:8px;display:flex;gap:8px">
-          <div class="wf-box-x" style="width:40px;height:40px;flex-shrink:0"></div>
-          <div><div style="font-size:11px;font-weight:800">Pause Déj’ & Salades</div><div style="font-size:9px;color:#627D87">15–20 min · Livraison : 3 DH</div><div style="font-size:10px;font-weight:800">Dès 22 DH</div></div>
+        <div style="border:1.2px solid #666;padding:6px;display:flex;gap:7px">
+          ${xBoxLowFi("38px", "38px")}
+          <div><div style="font-size:10.5px;font-weight:800">Pause Déj’</div><div style="font-size:8.5px;color:#555">15–20 min · Livraison : 3 DH</div><div style="font-size:10px;font-weight:800">Dès 22 DH</div></div>
         </div>
       </div>
-      <div style="text-align:center;font-size:9px;color:#627D87">CMC Rabat / 2 sur 5</div>`
-  },
-  {
-    id: 3,
-    step: "Écran 03 / 05",
-    name: "Menu du snack",
-    img: "screen-3-menu.png",
-    desc: "Navigation par catégories (Tacos, Sandwichs, Salades, Menus) permettant d'ajouter un plat au panier en un seul geste.",
-    uxPoints: [
-      "Onglets horizontaux pour filtrer sans scrolling inutile.",
-      "Bouton « + Ajouter » accessible d'une main sur mobile.",
-      "Prix nets en Dirhams (DH) et liste claire des ingrédients."
-    ],
-    wireframeHTML: `
       <div>
-        <div style="font-size:9px;color:#3A9AB2;font-weight:700">← Retour aux snacks</div>
-        <div style="font-size:16px;font-weight:900;margin:2px 0">Snack du Campus</div>
-        <div style="font-size:9.5px;color:#627D87;margin-bottom:7px">10–15 min · Livraison gratuite campus</div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:8px;text-align:center;font-size:10px;font-weight:800">
-          <div style="background:#102A33;color:#fff;padding:4px;border-radius:6px">Tacos</div>
-          <div style="border:1px solid #8A9BA3;padding:4px;border-radius:6px">Sandwichs</div>
-          <div style="border:1px solid #8A9BA3;padding:4px;border-radius:6px">Salades</div>
-        </div>
-        <div style="border:1px solid #BFD6DF;padding:7px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-          <div><div style="font-size:11px;font-weight:800">Tacos poulet</div><div style="font-size:9px;color:#627D87">Poulet, frites, sauce · <b>25 DH</b></div></div>
-          <span style="border:1.5px solid #102A33;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800">+ Ajouter</span>
-        </div>
-        <div style="border:1px solid #BFD6DF;padding:7px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-          <div><div style="font-size:11px;font-weight:800">Sandwich grillé</div><div style="font-size:9px;color:#627D87">Pain chaud, crudités · <b>20 DH</b></div></div>
-          <span style="border:1.5px solid #102A33;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800">+ Ajouter</span>
-        </div>
-        <div style="border:1px solid #BFD6DF;padding:7px;border-radius:8px;display:flex;justify-content:space-between;align-items:center">
-          <div><div style="font-size:11px;font-weight:800">Salade fraîcheur</div><div style="font-size:9px;color:#627D87">Thon, maïs, légumes · <b>22 DH</b></div></div>
-          <span style="border:1.5px solid #102A33;padding:3px 7px;border-radius:6px;font-size:9.5px;font-weight:800">+ Ajouter</span>
-        </div>
-      </div>
-      <div style="text-align:center;font-size:9px;color:#627D87">CMC Rabat / 3 sur 5</div>`
-  },
-  {
-    id: 4,
-    step: "Écran 04 / 05",
-    name: "Mon panier & Commande groupée",
-    img: "screen-4-cart.png",
-    desc: "Fonctionnalité clé issue de l'étude UX : le panier partagé permettant aux camarades de grouper leurs commandes.",
-    uxPoints: [
-      "Switch « Créer un panier partagé » pour inviter des stagiaires de la même classe.",
-      "Partage automatique des frais de livraison et paiement individuel.",
-      "Récapitulatif transparent avant validation du créneau de 12h30."
-    ],
-    wireframeHTML: `
-      <div>
-        <div style="font-size:9px;color:#3A9AB2;font-weight:700">← Menu</div>
-        <div style="font-size:16px;font-weight:900;margin:2px 0 6px">Mon panier</div>
-        <div style="border:1px solid #BFD6DF;padding:7px;border-radius:8px;display:flex;justify-content:space-between;margin-bottom:8px">
-          <div><div style="font-size:11px;font-weight:800">1 × Tacos poulet</div><div style="font-size:9px;color:#627D87">Sauce algérienne</div></div>
-          <div style="font-size:11px;font-weight:800">25 DH</div>
-        </div>
-        <div style="background:#F2F7F9;border:1.5px solid #3A9AB2;padding:8px;border-radius:10px;margin-bottom:8px">
-          <div style="display:flex;justify-content:space-between;align-items:center;font-size:10.5px;font-weight:800">
-            <span>Panier partagé (Groupe)</span>
-            <span style="background:#2EB88A;color:#fff;padding:2px 7px;border-radius:99px;font-size:9px">ACTIVÉ</span>
-          </div>
-          <div style="font-size:9px;color:#627D87;margin:4px 0 6px">Invitez vos camarades à ajouter leurs repas.</div>
-          <div style="border:1px solid #102A33;text-align:center;padding:4px;border-radius:6px;font-size:10px;font-weight:800">+ Inviter des camarades</div>
-        </div>
-        <div style="font-size:10px;display:flex;justify-content:space-between"><span>Sous-total</span><b>25 DH</b></div>
-        <div style="font-size:10px;display:flex;justify-content:space-between"><span>Livraison campus</span><b>0 DH</b></div>
-        <div style="font-size:12px;display:flex;justify-content:space-between;border-top:1px solid #DCE8ED;margin-top:4px;padding-top:4px"><span>Total à payer</span><b>25 DH</b></div>
-      </div>
-      <div>
-        <div style="background:#102A33;color:#fff;text-align:center;padding:9px;border-radius:8px;font-size:12px;font-weight:800">Continuer</div>
-        <div style="text-align:center;font-size:9px;color:#627D87;margin-top:5px">CMC Rabat / 4 sur 5</div>
+        <div style="font-size:8.5px;color:#555">Commandez ensemble, retirez au même point.</div>
+        <div style="text-align:center;font-size:8.5px;color:#666;margin-top:4px">CMC Rabat / 2 sur 5</div>
       </div>`
   },
   {
-    id: 5,
-    step: "Écran 05 / 05",
-    name: "Suivi en direct & QR Code",
-    img: "screen-5-qr.png",
-    desc: "Suivi en temps réel de la préparation jusqu'au point de collecte unique (Porte Principale CMC) avec validation par QR Code.",
-    uxPoints: [
-      "Barre de progression visuelle : Validée → Préparation → En route → À retirer.",
-      "Point de rendez-vous fixe éliminant les appels téléphoniques inutiles.",
-      "QR Code unique scanné par le livreur pour sécuriser la remise en 5 secondes."
+    tag: "Wireframe 3 / 5",
+    title: "3. Menu du snack",
+    summary: "Sélection rapide par catégorie (Tacos, Sandwichs, Menus) avec ajout direct au panier.",
+    notes: [
+      "Onglets simples permettant de passer d'une catégorie à l'autre sans recharger la page.",
+      "Bouton « + Ajouter » bien visible sur chaque item pour limiter les frictions.",
+      "Prix en dirhams (DH) et composition synthétique immédiatement lisibles."
     ],
-    wireframeHTML: `
+    screenHtml: `
       <div>
-        <div style="font-size:9px;color:#627D87;font-weight:700">COMMANDE N° CMC-012</div>
-        <div style="font-size:16px;font-weight:900;margin:2px 0 6px">Suivi en direct</div>
-        <div style="background:#FBF6E6;border:1px solid #D4AF37;padding:7px;border-radius:8px;margin-bottom:8px">
-          <div style="font-size:12px;font-weight:900">En préparation</div>
-          <div style="font-size:10px;color:#334E58">Retrait prévu à 12h30</div>
+        <div style="font-size:9px;color:#444;font-weight:700">← Snacks</div>
+        <div style="font-size:15px;font-weight:900;color:#111;margin:2px 0">Snack du Campus</div>
+        <div style="font-size:9px;color:#555;margin-bottom:7px">10–15 min · Livraison gratuite sur le campus</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:8px;text-align:center;font-size:9.5px;font-weight:800">
+          <div style="border:1.5px solid #222;background:#DCDCDC;padding:4px">Tacos</div>
+          <div style="border:1.5px solid #666;padding:4px">Sandwichs</div>
+          <div style="border:1.5px solid #666;padding:4px">Menus</div>
         </div>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px;text-align:center;font-size:8.5px;margin-bottom:8px">
-          <div><div style="height:4px;background:#2EB88A;margin-bottom:2px"></div>Validée</div>
-          <div><div style="height:4px;background:#2EB88A;margin-bottom:2px"></div><b>Prépa</b></div>
-          <div><div style="height:4px;background:#DCE8ED;margin-bottom:2px"></div>En route</div>
-          <div><div style="height:4px;background:#DCE8ED;margin-bottom:2px"></div>Retrait</div>
+        <div style="border:1.2px solid #666;padding:6px;display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <div style="display:flex;gap:6px;align-items:center">${xBoxLowFi("34px","34px")}<div><div style="font-size:10px;font-weight:800">Tacos poulet</div><div style="font-size:8.5px;color:#555">Poulet, frites · <b>25 DH</b></div></div></div>
+          <span style="border:1.2px solid #222;padding:3px 6px;font-size:8.5px;font-weight:800">+ Ajouter</span>
         </div>
-        <div style="font-size:9.5px;color:#627D87">Point de collecte CMC</div>
-        <div style="font-size:11px;font-weight:800;margin-bottom:6px">Porte Principale · CMC Rabat</div>
-        <div class="wf-box-x" style="width:84px;height:84px;margin:4px auto"><span style="background:#fff;padding:2px 5px;font-size:9px;font-weight:900;border:1px solid #102A33;position:relative;z-index:2">QR CODE</span></div>
+        <div style="border:1.2px solid #666;padding:6px;display:flex;justify-content:space-between;align-items:center">
+          <div style="display:flex;gap:6px;align-items:center">${xBoxLowFi("34px","34px")}<div><div style="font-size:10px;font-weight:800">Tacos viande hachée</div><div style="font-size:8.5px;color:#555">Viande, frites · <b>28 DH</b></div></div></div>
+          <span style="border:1.2px solid #222;padding:3px 6px;font-size:8.5px;font-weight:800">+ Ajouter</span>
+        </div>
       </div>
       <div>
-        <div style="background:#102A33;color:#fff;text-align:center;padding:8px;border-radius:8px;font-size:11px;font-weight:800">Retour à l'accueil</div>
-        <div style="text-align:center;font-size:9px;color:#627D87;margin-top:5px">CMC Rabat / 5 sur 5</div>
+        <div style="font-size:8.5px;color:#555">Choisissez votre plat avec « + Ajouter ».</div>
+        <div style="text-align:center;font-size:8.5px;color:#666;margin-top:4px">CMC Rabat / 3 sur 5</div>
+      </div>`
+  },
+  {
+    tag: "Wireframe 4 / 5",
+    title: "4. Mon panier & Commande groupée",
+    summary: "Vérification de la commande, activation du panier partagé avec les camarades et récapitulatif transparent.",
+    notes: [
+      "Module « Commander à plusieurs » avec bouton d'invitation des camarades du campus.",
+      "Récapitulatif clair : sous-total, frais de livraison campus et total net à payer.",
+      "Indication de l'étape suivante (créneau horaire et point de collecte)."
+    ],
+    screenHtml: `
+      <div>
+        <div style="font-size:9px;color:#444;font-weight:700">← Menu</div>
+        <div style="font-size:15px;font-weight:900;color:#111;margin:2px 0">Mon panier</div>
+        <div style="font-size:9px;color:#555;margin-bottom:6px">Snack du Campus · 1 article</div>
+        <div style="border:1.2px solid #666;padding:6px;display:flex;justify-content:space-between;align-items:center;margin-bottom:7px">
+          <div style="display:flex;gap:6px;align-items:center">${xBoxLowFi("34px","34px")}<div><div style="font-size:10px;font-weight:800">Tacos poulet</div><div style="font-size:8.5px;color:#555">Qté : 1</div></div></div>
+          <b style="font-size:10.5px">25 DH</b>
+        </div>
+        <div style="border:1.5px solid #444;background:#F7F7F7;padding:7px;margin-bottom:7px">
+          <div style="display:flex;justify-content:space-between;font-size:9.5px;font-weight:800"><span>Panier partagé (Groupe)</span><span>[ON]</span></div>
+          <div style="font-size:8.5px;color:#555;margin:3px 0 5px">Invitez vos camarades avant de valider.</div>
+          <div style="border:1.2px solid #222;background:#fff;text-align:center;padding:4px;font-size:9px;font-weight:800">Inviter des camarades</div>
+        </div>
+        <div style="font-size:9.5px;display:flex;justify-content:space-between"><span>Sous-total</span><span>25 DH</span></div>
+        <div style="font-size:9.5px;display:flex;justify-content:space-between"><span>Livraison campus</span><span>0 DH</span></div>
+        <div style="font-size:11px;font-weight:900;display:flex;justify-content:space-between;border-top:1px solid #999;margin-top:4px;padding-top:4px"><span>Total à payer</span><span>25 DH</span></div>
+      </div>
+      <div>
+        <div style="border:1.5px solid #222;background:#E2E2E2;text-align:center;padding:7px;font-size:10.5px;font-weight:800">Continuer</div>
+        <div style="text-align:center;font-size:8.5px;color:#666;margin-top:4px">CMC Rabat / 4 sur 5</div>
+      </div>`
+  },
+  {
+    tag: "Wireframe 5 / 5",
+    title: "5. Suivi en direct & QR Code",
+    summary: "Suivi d'avancement en 4 étapes, point de collecte Porte Principale CMC et retrait sécurisé par QR Code.",
+    notes: [
+      "Barre de progression lisible : Validée → Préparation → En route → À retirer.",
+      "Adresse de retrait fixe (Porte Principale · CMC Rabat) pour éviter les appels téléphoniques.",
+      "Zone QR Code dédiée à la validation rapide par le livreur."
+    ],
+    screenHtml: `
+      <div>
+        <div style="font-size:8.5px;color:#666;font-weight:700">COMMANDE N° CMC-012</div>
+        <div style="font-size:15px;font-weight:900;color:#111;margin:2px 0">Suivi en direct</div>
+        <div style="font-size:9px;color:#555;margin-bottom:6px">Snack du Campus · Paiement confirmé</div>
+        <div style="border:1.5px solid #444;background:#EFEFEF;padding:6px 8px;margin-bottom:7px">
+          <div style="font-size:11px;font-weight:900">En préparation</div>
+          <div style="font-size:9.5px;color:#333">Retrait prévu à 12h30</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:3px;text-align:center;font-size:8px;margin-bottom:7px">
+          <div><div style="height:3px;background:#222;margin-bottom:2px"></div>Validée</div>
+          <div><div style="height:3px;background:#222;margin-bottom:2px"></div><b>Prépa</b></div>
+          <div><div style="height:3px;background:#CCC;margin-bottom:2px"></div>En route</div>
+          <div><div style="height:3px;background:#CCC;margin-bottom:2px"></div>Retrait</div>
+        </div>
+        <div style="font-size:8.5px;color:#666">Point de collecte CMC</div>
+        <div style="font-size:10.5px;font-weight:800;margin-bottom:5px">Porte Principale · CMC Rabat</div>
+        <div style="display:flex;justify-content:center">${xBoxLowFi("76px", "76px", "QR CODE")}</div>
+      </div>
+      <div>
+        <div style="border:1.5px solid #222;background:#E2E2E2;text-align:center;padding:7px;font-size:10px;font-weight:800">Retour à l'accueil</div>
+        <div style="text-align:center;font-size:8.5px;color:#666;margin-top:4px">CMC Rabat / 5 sur 5</div>
       </div>`
   }
 ];
 
-/* Définition des 11 Slides (00 Sommaire + 01 à 10) */
 const SLIDES = [
-  /* 00 : COUVERTURE & SOMMAIRE */
+  /* SLIDE 0 : SOMMAIRE INTERACTIF */
   {
-    isCover: true,
-    render: () => `
-      <div class="cover-layout">
-        <div class="hero-box">
-          <div>
-            <span class="hero-tag">Étude UX Design · Portfolio & Soutenance</span>
-            <h1 class="hero-title">Application de livraison de repas pour le campus CMC Rabat</h1>
-            <p class="hero-sub">Concevoir une expérience rapide, économique et fiable reliant les stagiaires, les snacks partenaires et les livreurs autour du campus de Tamesna.</p>
-            <div class="actor-chips">
-              <span class="actor-chip">Stagiaires CMC</span>
-              <span class="actor-chip">Snacks & Restaurants</span>
-              <span class="actor-chip">Livreurs Campus</span>
+    isSommaire: true,
+    render: () => {
+      const items = [
+        { s: 1, num: "01", label: "Problématique", icon: SVG_ICONS.alert },
+        { s: 2, num: "02", label: "Recherche qualitative", icon: SVG_ICONS.interview },
+        { s: 3, num: "03", label: "Recherche quantitative", icon: SVG_ICONS.survey },
+        { s: 4, num: "04", label: "Persona & Carte d'Empathie", icon: SVG_ICONS.persona },
+        { s: 5, num: "05", label: "Objectifs et solutions", icon: SVG_ICONS.solution },
+        { s: 6, num: "06", label: "Scénarios d'usage", icon: SVG_ICONS.scenario },
+        { s: 7, num: "07", label: "Carte d'expérience", icon: SVG_ICONS.map },
+        { s: 8, num: "08", label: "Parcours utilisateur", icon: SVG_ICONS.journey },
+        { s: 9, num: "09", label: "User flow", icon: SVG_ICONS.flow },
+        { s: 10, num: "10", label: "Wireframes", icon: SVG_ICONS.wireframe }
+      ];
+      return `
+        <div class="som-layout">
+          <div class="som-hero stagger-item">
+            <div>
+              <div style="display:inline-block;background:rgba(212,175,55,0.2);color:var(--gold);border:1px solid rgba(212,175,55,0.45);padding:5px 12px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px">
+                UX Design · Low-Fidelity
+              </div>
+              <h1 style="font-size:29px;font-weight:900;line-height:1.18;margin-bottom:12px">
+                Application de livraison de repas pour la CMC Rabat
+              </h1>
+              <p style="font-size:13.5px;color:#C3DCE5;line-height:1.55;margin-bottom:16px">
+                Présentation animée de la démarche UX complète (de la recherche terrain aux wireframes basse fidélité), reliant les stagiaires de Tamesna, les snacks locaux et les livreurs.
+              </p>
+            </div>
+            <div style="border-top:1px solid rgba(255,255,255,0.16);padding-top:12px;font-size:12px;color:#A3C7D3">
+              Cité des Métiers et des Compétences · Rabat (2026)
             </div>
           </div>
-          <div style="font-size:13px;color:#9CC4D1;border-top:1px solid rgba(255,255,255,0.15);padding-top:14px">
-            Filière Design Digital UX/UI · Cité des Métiers et des Compétences (Rabat-Salé-Kénitra)
+
+          <div>
+            <div style="font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1.1px;color:var(--teal-deep);margin-bottom:10px">
+              Sommaire interactif — Cliquez sur une section (10 étapes)
+            </div>
+            <div class="som-grid">
+              ${items.map((it, idx) => `
+                <button class="som-card stagger-item" style="animation-delay:${idx * 0.045}s" onclick="goToSlide(${it.s})">
+                  <span class="som-card-num">${it.num}</span>
+                  <span class="som-card-icon">${it.icon}</span>
+                  <span class="som-card-title">${it.label}</span>
+                </button>
+              `).join("")}
+            </div>
           </div>
-        </div>
-        <div>
-          <div style="font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1.1px;color:var(--bg-teal);margin-bottom:10px">Sommaire interactif (Cliquez sur une section)</div>
-          <div class="sommaire-grid">
-            <button class="som-item" onclick="goToSlide(1)"><span class="som-num">01</span><span class="som-label">Problématique</span></button>
-            <button class="som-item" onclick="goToSlide(2)"><span class="som-num">02</span><span class="som-label">Recherche qualitative</span></button>
-            <button class="som-item" onclick="goToSlide(3)"><span class="som-num">03</span><span class="som-label">Recherche quantitative (%)</span></button>
-            <button class="som-item" onclick="goToSlide(4)"><span class="som-num">04</span><span class="som-label">Persona</span></button>
-            <button class="som-item" onclick="goToSlide(5)"><span class="som-num">05</span><span class="som-label">Objectifs et solutions</span></button>
-            <button class="som-item" onclick="goToSlide(6)"><span class="som-num">06</span><span class="som-label">Scénarios d'usage</span></button>
-            <button class="som-item" onclick="goToSlide(7)"><span class="som-num">07</span><span class="som-label">Carte d'expérience</span></button>
-            <button class="som-item" onclick="goToSlide(8)"><span class="som-num">08</span><span class="som-label">Parcours utilisateur</span></button>
-            <button class="som-item" onclick="goToSlide(9)"><span class="som-num">09</span><span class="som-label">User flow</span></button>
-            <button class="som-item" onclick="goToSlide(10)"><span class="som-num">10</span><span class="som-label">Prototype & Wireframes</span></button>
-          </div>
-        </div>
-      </div>`
+        </div>`;
+    }
   },
 
-  /* 01 : PROBLÉMATIQUE */
+  /* SLIDE 01 : PROBLÉMATIQUE (ICÔNE ALERTE ! — AUCUN POINT D'INTERROGATION) */
   {
     num: "01",
-    kicker: "Cadrage & Contexte",
+    kicker: "Diagnostic terrain · Campus CMC Rabat (Tamesna)",
     title: "Problématique",
-    icon: ICONS.target,
+    icon: SVG_ICONS.alert,
     render: () => `
-      <div class="panel dark-panel" style="margin-bottom:20px;padding:24px">
-        <div style="font-size:12px;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Question centrale de design (How Might We)</div>
-        <p style="font-size:19px;font-weight:700;color:#fff;line-height:1.45">
-          « Comment permettre aux stagiaires de la CMC Rabat de commander et recevoir un repas adapté à leur budget étudiant, sans subir les files d'attente ni risquer d'arriver en retard à la reprise des cours ? »
+      <div class="box box-dark stagger-item" style="margin-bottom:16px;padding:18px 22px">
+        <h3>Constat central sur le campus de la CMC Rabat</h3>
+        <p style="font-size:15.5px;font-weight:600">
+          Les stagiaires disposent de pauses déjeuner courtes (30 à 45 minutes) dans un environnement éloigné des snacks extérieurs, avec des files d'attente denses à midi et des frais de livraison individuels peu adaptés au budget étudiant.
         </p>
       </div>
-      <div class="grid-3">
-        <div class="panel">
-          <h3>Contrainte temporelle</h3>
-          <p>Les pauses déjeuner durent entre <b>30 et 45 minutes</b>. Le trajet à pied vers les snacks extérieurs à Tamesna consomme plus de la moitié du temps disponible.</p>
+      <div class="g2">
+        <div class="box box-gold stagger-item" style="animation-delay:0.08s">
+          <h3>Pains liés au temps (30–45 min de pause)</h3>
+          <ul>
+            <li>Temps de marche aller-retour vers les snacks de Tamesna trop long.</li>
+            <li>Pic d'affluence à 12h15 causant 15 à 25 minutes d'attente.</li>
+            <li>Stress de rater la reprise des séances ou ateliers l'après-midi.</li>
+          </ul>
         </div>
-        <div class="panel gold-panel">
-          <h3>Contrainte budgétaire</h3>
-          <p>Les stagiaires disposent d'un budget quotidien limité (<b>20 à 30 DH</b>). Les frais de livraison individuels des plateformes classiques sont dissuasifs.</p>
-        </div>
-        <div class="panel">
-          <h3>Saturation logistique</h3>
-          <p>Entre <b>12h15 et 12h45</b>, tous les groupes sortent simultanément, provoquant une saturation des cuisines et une confusion aux entrées du campus.</p>
+        <div class="box stagger-item" style="animation-delay:0.14s">
+          <h3>Pains liés au coût & à la livraison</h3>
+          <ul>
+            <li>Budget quotidien souvent limité entre 20 DH et 30 DH.</li>
+            <li>Frais de livraison à l'unité jugés excessifs par rapport au prix du repas.</li>
+            <li>Imprécision des lieux de remise aux entrées du campus.</li>
+          </ul>
         </div>
       </div>`
   },
 
-  /* 02 : RECHERCHE QUALITATIVE */
+  /* SLIDE 02 : RECHERCHE QUALITATIVE */
   {
     num: "02",
-    kicker: "Entretiens semi-directifs (3 acteurs)",
+    kicker: "3 entretiens terrain · Questions & Réponses",
     title: "Recherche qualitative",
-    icon: ICONS.mic,
+    icon: SVG_ICONS.interview,
     render: () => `
-      <div class="grid-3">
-        <div class="panel">
-          <h3>1. Stagiaire CMC</h3>
-          <p style="font-size:12.5px;color:var(--bg-teal);font-weight:700">Profil : 2e année Design Digital</p>
-          <div class="qa-item">
-            <div class="qa-q">Q : Comment se passe votre pause déjeuner ?</div>
-            <div class="qa-a">« À 12h15, tout le monde court vers les mêmes snacks. J'attends parfois 20 minutes debout et je mange en 5 minutes. »</div>
+      <div class="g3">
+        <div class="box stagger-item" style="animation-delay:0.05s">
+          <h3>Entretien 1 · Stagiaire CMC</h3>
+          <p style="font-size:12px;font-weight:700;color:var(--teal-deep)">Salma, 20 ans · Stagiaire CMC Rabat</p>
+          <div class="qa-box">
+            <div class="qa-q">Question : Que se passe-t-il quand vous sortez manger à midi ?</div>
+            <div class="qa-a">« À 12h15, tout le monde sort en même temps. Si on attend au snack, on mange en vitesse ou on arrive en retard. »</div>
           </div>
-          <div class="qa-item">
-            <div class="qa-q">Q : Pourquoi ne commandez-vous pas en ligne ?</div>
-            <div class="qa-a">« Payer 10 ou 15 DH de livraison pour un sandwich à 20 DH est trop cher, sauf si on commande en groupe. »</div>
-          </div>
-        </div>
-
-        <div class="panel gold-panel">
-          <h3>2. Gérant de snack</h3>
-          <p style="font-size:12.5px;color:#8A6D14;font-weight:700">Profil : Snack à proximité de Tamesna</p>
-          <div class="qa-item" style="border-left-color:var(--gold)">
-            <div class="qa-q">Q : Quelle est votre difficulté majeure le midi ?</div>
-            <div class="qa-a">« Toutes les commandes arrivent d'un coup à 12h15. Par téléphone, on fait souvent des erreurs sur les sauces ou suppléments. »</div>
-          </div>
-          <div class="qa-item" style="border-left-color:var(--gold)">
-            <div class="qa-q">Q : Qu'est-ce qui faciliterait votre service ?</div>
-            <div class="qa-a">« Recevoir les précommandes 20 minutes avant la pause pour préparer les séries à l'avance. »</div>
+          <div class="qa-box">
+            <div class="qa-q">Question : Qu'est-ce qui vous aiderait vraiment ?</div>
+            <div class="qa-a">« Commander à l'avance avec mes camarades et récupérer notre repas à 12h30 sans payer plein pot. »</div>
           </div>
         </div>
 
-        <div class="panel">
-          <h3>3. Livreur campus</h3>
-          <p style="font-size:12.5px;color:var(--bg-teal);font-weight:700">Profil : Livreur indépendant zone CMC</p>
-          <div class="qa-item">
-            <div class="qa-q">Q : Qu'est-ce qui vous ralentit à la CMC ?</div>
-            <div class="qa-a">« Je dois appeler chaque étudiant pour savoir à quelle porte il se trouve, et certains mettent 7 minutes à descendre. »</div>
+        <div class="box box-gold stagger-item" style="animation-delay:0.12s">
+          <h3>Entretien 2 · Gérant de snack</h3>
+          <p style="font-size:12px;font-weight:700;color:#8A6D14">Rachid · Gérant snack partenaire</p>
+          <div class="qa-box" style="border-left-color:var(--gold)">
+            <div class="qa-q">Question : Quel est votre principal défi à l'heure du déjeuner ?</div>
+            <div class="qa-a">« Entre 12h10 et 12h30, les demandes arrivent toutes d'un coup, ce qui crée du stress et des erreurs de préparation. »</div>
           </div>
-          <div class="qa-item">
-            <div class="qa-q">Q : Quelle solution vous ferait gagner du temps ?</div>
-            <div class="qa-a">« Un seul point de collecte officiel à la Porte Principale avec un QR code rapide pour valider la remise. »</div>
+          <div class="qa-box" style="border-left-color:var(--gold)">
+            <div class="qa-q">Question : Comment optimiser la préparation ?</div>
+            <div class="qa-a">« Recevoir les commandes groupées et programmées avant 12h pour préparer sereinement. »</div>
+          </div>
+        </div>
+
+        <div class="box stagger-item" style="animation-delay:0.19s">
+          <h3>Entretien 3 · Livreur</h3>
+          <p style="font-size:12px;font-weight:700;color:var(--teal-deep)">Mehdi · Livreur zone CMC Rabat</p>
+          <div class="qa-box">
+            <div class="qa-q">Question : Où perdez-vous le plus de temps lors des livraisons ?</div>
+            <div class="qa-a">« Quand je dois appeler chaque personne parce qu'elle n'est pas au bon accès ou met du temps à sortir. »</div>
+          </div>
+          <div class="qa-box">
+            <div class="qa-q">Question : Quelle organisation serait idéale ?</div>
+            <div class="qa-a">« Un point de collecte fixe à la porte principale et un scan QR code rapide pour valider la remise. »</div>
           </div>
         </div>
       </div>`
   },
 
-  /* 03 : RECHERCHE QUANTITATIVE (%) */
+  /* SLIDE 03 : RECHERCHE QUANTITATIVE (50 RÉPONDANTS — COMPTEURS % ANIMÉS) */
   {
     num: "03",
-    kicker: "Sondage terrain · Échantillon de 50 répondants",
-    title: "Recherche quantitative : résultats clés",
-    icon: ICONS.chart,
+    kicker: "Sondage auprès de 50 stagiaires · Résultats en %",
+    title: "Recherche quantitative",
+    icon: SVG_ICONS.survey,
     onEnter: () => {
       setTimeout(() => {
-        document.querySelectorAll(".stat-bar-fill").forEach(bar => {
-          bar.style.width = bar.dataset.target + "%";
+        document.querySelectorAll(".kpi-bar-fill").forEach(bar => {
+          bar.style.width = bar.dataset.pct + "%";
         });
-        document.querySelectorAll(".stat-pct").forEach(el => {
-          const target = parseInt(el.dataset.val, 10);
-          let current = 0;
-          const step = Math.max(1, Math.ceil(target / 28));
-          const timer = setInterval(() => {
-            current += step;
-            if (current >= target) { current = target; clearInterval(timer); }
-            el.textContent = current + "%";
-          }, 28);
+        document.querySelectorAll(".kpi-num").forEach(el => {
+          const target = parseInt(el.dataset.target, 10);
+          let val = 0;
+          const inc = Math.max(1, Math.ceil(target / 26));
+          const iv = setInterval(() => {
+            val += inc;
+            if (val >= target) { val = target; clearInterval(iv); }
+            el.textContent = val + "%";
+          }, 30);
         });
-      }, 120);
+      }, 100);
     },
     render: () => `
-      <div class="grid-2" style="margin-bottom:16px">
-        <div class="stat-card">
-          <div class="stat-top">
-            <span class="stat-pct" data-val="78">0%</span>
-            <span class="stat-tag">39 / 50 stagiaires</span>
+      <div class="g2" style="margin-bottom:14px">
+        <div class="kpi-card stagger-item" style="animation-delay:0.05s">
+          <div class="kpi-top">
+            <span class="kpi-num" data-target="78">0%</span>
+            <span class="kpi-badge">39 / 50 répondants</span>
           </div>
-          <div class="stat-bar-bg"><div class="stat-bar-fill" data-target="78"></div></div>
-          <div class="stat-desc">Disposent d'une pause de 45 minutes ou moins</div>
-          <div class="stat-sub">56% n'ont que 30 min effectives entre deux séances d'atelier.</div>
+          <div class="kpi-bar-track"><div class="kpi-bar-fill" data-pct="78"></div></div>
+          <div style="font-size:13.5px;font-weight:800">Ont une pause déjeuner de 30 à 45 minutes</div>
+          <div style="font-size:12px;color:var(--ink-muted);margin-top:3px">Temps très réduit entre les séances de formation.</div>
         </div>
 
-        <div class="stat-card">
-          <div class="stat-top">
-            <span class="stat-pct" data-val="84">0%</span>
-            <span class="stat-tag">42 / 50 stagiaires</span>
+        <div class="kpi-card stagger-item" style="animation-delay:0.1s">
+          <div class="kpi-top">
+            <span class="kpi-num" data-target="84">0%</span>
+            <span class="kpi-badge">42 / 50 répondants</span>
           </div>
-          <div class="stat-bar-bg"><div class="stat-bar-fill" data-target="84"></div></div>
-          <div class="stat-desc">Ont un budget déjeuner inférieur à 30 DH</div>
-          <div class="stat-sub">Le panier moyen idéal se situe entre 20 DH et 28 DH.</div>
+          <div class="kpi-bar-track"><div class="kpi-bar-fill" data-pct="84"></div></div>
+          <div style="font-size:13.5px;font-weight:800">Disposent d'un budget repas inférieur à 30 DH</div>
+          <div style="font-size:12px;color:var(--ink-muted);margin-top:3px">Sensibilité forte aux frais de livraison ajoutés.</div>
         </div>
 
-        <div class="stat-card">
-          <div class="stat-top">
-            <span class="stat-pct" data-val="66">0%</span>
-            <span class="stat-tag">33 / 50 stagiaires</span>
+        <div class="kpi-card stagger-item" style="animation-delay:0.15s">
+          <div class="kpi-top">
+            <span class="kpi-num" data-target="66">0%</span>
+            <span class="kpi-badge">33 / 50 répondants</span>
           </div>
-          <div class="stat-bar-bg"><div class="stat-bar-fill" data-target="66"></div></div>
-          <div class="stat-desc">Souhaitent commander en groupe avec leurs camarades</div>
-          <div class="stat-sub">Objectif principal : diviser ou annuler les frais de livraison.</div>
+          <div class="kpi-bar-track"><div class="kpi-bar-fill" data-pct="66"></div></div>
+          <div style="font-size:13.5px;font-weight:800">Souhaitent utiliser la commande groupée entre camarades</div>
+          <div style="font-size:12px;color:var(--ink-muted);margin-top:3px">Réduction des frais et retrait regroupé au même point.</div>
         </div>
 
-        <div class="stat-card">
-          <div class="stat-top">
-            <span class="stat-pct" data-val="92">0%</span>
-            <span class="stat-tag">46 / 50 stagiaires</span>
+        <div class="kpi-card stagger-item" style="animation-delay:0.2s">
+          <div class="kpi-top">
+            <span class="kpi-num" data-target="90">0%</span>
+            <span class="kpi-badge">45 / 50 répondants</span>
           </div>
-          <div class="stat-bar-bg"><div class="stat-bar-fill" data-target="92"></div></div>
-          <div class="stat-desc">Plébiscitent la précommande programmée avant la pause</div>
-          <div class="stat-sub">Recevoir le repas dès 12h30 à la porte du campus est le besoin n°1.</div>
+          <div class="kpi-bar-track"><div class="kpi-bar-fill" data-pct="90"></div></div>
+          <div style="font-size:13.5px;font-weight:800">Veulent précommander avant la pause avec suivi en direct</div>
+          <div style="font-size:12px;color:var(--ink-muted);margin-top:3px">Garantie d'être servi à l'heure prévue.</div>
         </div>
       </div>
-      <div class="panel dark-panel" style="padding:14px 20px;display:flex;justify-content:space-between;align-items:center">
-        <span><b>Synthèse quantitative (n = 50) :</b> La rapidité (précommande) et le coût maîtrisé (panier partagé) sont les deux leviers majeurs d'adoption.</span>
-        <span style="background:var(--gold);color:var(--dark-ink);padding:5px 12px;border-radius:999px;font-weight:800;font-size:12px">100% Mobile</span>
+      <div class="box box-dark stagger-item" style="animation-delay:0.25s;padding:12px 18px">
+        <p><b>Conclusion chiffrée (n = 50) :</b> Plus de 4 stagiaires sur 5 ont un budget sous 30 DH et près de 9 sur 10 veulent planifier leur repas avant la pause.</p>
       </div>`
   },
 
-  /* 04 : PERSONA */
+  /* SLIDE 04 : PERSONA & CARTE D'EMPATHIE RADIALE ANIMÉE */
   {
     num: "04",
-    kicker: "Archétype utilisateur principal",
-    title: "Persona : Yassine El Amrani",
-    icon: ICONS.user,
+    kicker: "Cible utilisateur · Vue Persona & Carte d'Empathie",
+    title: "Persona & Carte d'Empathie",
+    icon: SVG_ICONS.persona,
+    onEnter: () => {
+      if (window._empathyActive) runEmpathyAnimation();
+    },
     render: () => `
-      <div class="persona-layout">
-        <div class="persona-left">
-          <div class="persona-avatar">
-            <img src="persona-etudiant.png" alt="Yassine El Amrani" onerror="this.style.display='none'">
-            <svg width="54" height="54" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.8"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          </div>
-          <div class="persona-name">Yassine El Amrani</div>
-          <div class="persona-role">20 ans · Stagiaire CMC Rabat</div>
-          <p style="font-size:12.5px;color:#B8D4DE;margin-bottom:14px">Filière Design Digital · Réside à Tamesna · Budget : 25 DH/repas</p>
-          <div class="persona-quote">« Entre deux ateliers pratiques, je veux commander mon repas en 1 minute avec mes camarades et le récupérer sans faire la queue. »</div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:10px">
+        <div class="view-switch">
+          <button class="view-tab active" id="tabPersona" onclick="switchPersonaView('persona')">4.1 Persona</button>
+          <button class="view-tab" id="tabEmpathy" onclick="switchPersonaView('empathy')">4.2 Carte d'Empathie</button>
         </div>
-
-        <div style="display:flex;flex-direction:column;justify-content:space-between">
-          <div class="panel" style="margin-bottom:12px">
-            <h3>Biographie & Contexte quotidien</h3>
-            <p>Étudiant assidu à la Cité des Métiers et des Compétences de Rabat, Yassine passe ses journées sur ordinateur. Sa pause déjeuner de 12h30 à 13h15 est courte : il utilise son smartphone en permanence et préfère partager ses commandes avec son groupe de projet.</p>
-          </div>
-          <div class="grid-3">
-            <div class="panel gold-panel">
-              <h3>Objectifs clés</h3>
-              <ul>
-                <li>Manger chaud et équilibré à l'heure.</li>
-                <li>Respecter son budget étudiant (20–30 DH).</li>
-                <li>Éviter tout retard en séance l'après-midi.</li>
-              </ul>
-            </div>
-            <div class="panel">
-              <h3>Frustrations</h3>
-              <ul>
-                <li>Files d'attente interminables à 12h15.</li>
-                <li>Frais de livraison élevés en solo.</li>
-                <li>Manque de visibilité sur l'heure d'arrivée.</li>
-              </ul>
-            </div>
-            <div class="panel">
-              <h3>Attentes UX</h3>
-              <ul>
-                <li>Précommande à créneau fixe (12h30).</li>
-                <li>Panier partagé en un clic.</li>
-                <li>Suivi en direct et retrait QR Code.</li>
-              </ul>
-            </div>
-          </div>
-          <div class="persona-tags">
-            <span class="p-tag gold">#BudgetÉtudiant</span>
-            <span class="p-tag">#PauseCourte30min</span>
-            <span class="p-tag">#CommandeGroupée</span>
-            <span class="p-tag">#MobileFirst</span>
-            <span class="p-tag">#CMCRabat</span>
-          </div>
-        </div>
-      </div>`
+      </div>
+      <div id="personaViewContainer"></div>`
   },
 
-  /* 05 : OBJECTIFS ET SOLUTIONS */
+  /* SLIDE 05 : OBJECTIFS ET SOLUTIONS */
   {
     num: "05",
-    kicker: "Alignement Besoins ↔ Réponses Design",
-    title: "Objectifs et solutions UX",
-    icon: ICONS.bulb,
-    render: () => `
-      <div>
-        <div class="obj-row">
-          <div class="panel"><h3>Besoin 01 · Éliminer l'attente en pause</h3><p>Les stagiaires perdent 20 min dans les files d'attente des snacks à 12h15.</p></div>
-          <div class="arrow-circle">→</div>
-          <div class="panel gold-panel"><h3>Solution UX · Précommande horodatée</h3><p>Commander à 11h45 pour une livraison programmée pile à <b>12h30</b>.</p></div>
-        </div>
-        <div class="obj-row">
-          <div class="panel"><h3>Besoin 02 · Réduire le coût de livraison</h3><p>84% des stagiaires ont un budget inférieur à 30 DH et refusent les frais élevés.</p></div>
-          <div class="arrow-circle">→</div>
-          <div class="panel gold-panel"><h3>Solution UX · Panier partagé (Commande groupée)</h3><p>Un stagiaire ouvre un panier groupe, invite ses camarades et chacun paie sa part.</p></div>
-        </div>
-        <div class="obj-row">
-          <div class="panel"><h3>Besoin 03 · Fluidifier la remise sur le campus</h3><p>Les livreurs peinent à localiser les stagiaires aux différentes entrées.</p></div>
-          <div class="arrow-circle">→</div>
-          <div class="panel gold-panel"><h3>Solution UX · Point de collecte fixe + QR Code</h3><p>Remise centralisée à la <b>Porte Principale CMC</b> validée par scan QR instantané.</p></div>
-        </div>
-        <div class="obj-row" style="margin-bottom:0">
-          <div class="panel"><h3>Besoin 04 · Éviter les ruptures de stock</h3><p>Les snacks annulent parfois des plats par manque d'anticipation.</p></div>
-          <div class="arrow-circle">→</div>
-          <div class="panel gold-panel"><h3>Solution UX · Substitution instantanée</h3><p>Proposition automatique d'une alternative ou remboursement immédiat en un clic.</p></div>
-        </div>
-      </div>`
+    kicker: "Traduction des besoins en leviers UX",
+    title: "Objectifs et solutions",
+    icon: SVG_ICONS.solution,
+    render: () => {
+      const pairs = [
+        { b: "Besoin 1 · Éviter la file d'attente de 12h15", s: "Précommande programmée avant la pause (ex. livraison à 12h30) avec préparation anticipée." },
+        { b: "Besoin 2 · Réduire les frais de livraison", s: "Panier partagé (commande groupée) permettant aux stagiaires de regrouper leurs plats." },
+        { b: "Besoin 3 · Localiser facilement la remise", s: "Points de collecte précis sur le campus de la CMC Rabat + validation par QR Code." },
+        { b: "Besoin 4 · Rassurer pendant l'attente", s: "Suivi en temps réel en 4 étapes et alerte immédiate en cas d'indisponibilité d'un plat." }
+      ];
+      return `
+        <div style="display:flex;flex-direction:column;gap:12px">
+          ${pairs.map((p, i) => `
+            <div class="stagger-item" style="animation-delay:${i * 0.08}s;display:grid;grid-template-columns:1fr 44px 1fr;gap:10px;align-items:center">
+              <div class="box"><h3>${p.b}</h3></div>
+              <div style="width:36px;height:36px;border-radius:50%;background:var(--gold);color:var(--ink-dark);font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto">→</div>
+              <div class="box box-gold"><h3>Solution UX</h3><p>${p.s}</p></div>
+            </div>
+          `).join("")}
+        </div>`;
+    }
   },
 
-  /* 06 : SCÉNARIOS D'USAGE */
+  /* SLIDE 06 : SCÉNARIOS D'USAGE */
   {
     num: "06",
-    kicker: "Mise en situation concrète",
-    title: "Scénarios d'usage : Un mardi à la CMC",
-    icon: ICONS.clock,
-    render: () => `
-      <div class="grid-2">
-        <div class="panel">
-          <h3>Scénario A · Commande groupée avant la pause</h3>
-          <ul style="margin-top:8px;display:flex;flex-direction:column;gap:10px">
-            <li><b>11h45 — Fin de matinée :</b> Yassine ouvre l'app sur son téléphone, choisit <i>Snack du Campus</i> et active l'option <b>« Panier partagé »</b>.</li>
-            <li><b>11h48 — Invitation :</b> Il partage le lien à 3 camarades de son groupe qui ajoutent leurs tacos et salades.</li>
-            <li><b>11h52 — Validation :</b> Créneau sélectionné : <b>12h30 · Porte Principale</b>. Les frais de livraison sont à 0 DH.</li>
-            <li><b>12h28 — Notification & Retrait :</b> Alerte « Livreur arrivé ». Yassine présente son QR Code et récupère les 4 repas en 10 secondes.</li>
-          </ul>
-        </div>
-        <div class="panel dark-panel">
-          <h3>Scénario B · Côté Snack & Livreur</h3>
-          <ul style="margin-top:8px;display:flex;flex-direction:column;gap:10px">
-            <li><b>11h53 — Réception cuisine :</b> Le gérant du snack reçoit la commande groupée anticipée et lance la préparation hors période de rush.</li>
-            <li><b>12h18 — Prise en charge :</b> Le livreur récupère le sac scellé n° CMC-012 et démarre son itinéraire GPS vers la CMC Rabat.</li>
-            <li><b>12h28 — Remise sécurisée :</b> À la Porte Principale, le livreur scanne le QR Code de Yassine : la livraison est clôturée automatiquement.</li>
-          </ul>
-        </div>
-      </div>`
+    kicker: "Mise en situation · Avant la pause de 12h30",
+    title: "Scénarios d'usage",
+    icon: SVG_ICONS.scenario,
+    render: () => {
+      const steps = [
+        { time: "11h45", title: "Ouverture & Panier groupé", desc: "Yassine ouvre l'app pendant une pause d'atelier, choisit un snack proche de la CMC et crée un panier partagé avec 3 camarades." },
+        { time: "11h50", title: "Choix du créneau 12h30", desc: "Chaque camarade ajoute son plat. Yassine programme la livraison pour 12h30 à la Porte Principale avec un prix total transparent." },
+        { time: "12h25", title: "Suivi & Alerte livreur", desc: "La commande passe à « En route ». Yassine reçoit une notification et descend tranquillement à l'entrée du campus." },
+        { time: "12h30", title: "Retrait QR & Pause sereine", desc: "Le livreur scanne le QR Code en quelques secondes. Yassine récupère le repas et déjeune sans stress avant la reprise." }
+      ];
+      return `
+        <div class="g2">
+          ${steps.map((st, idx) => `
+            <div class="box ${idx === 1 || idx === 3 ? "box-gold" : ""} stagger-item" style="animation-delay:${idx * 0.09}s">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+                <span style="background:var(--ink-dark);color:var(--gold);padding:4px 11px;border-radius:999px;font-size:12px;font-weight:900">${st.time}</span>
+                <span style="font-size:11.5px;font-weight:800;color:var(--teal-deep)">Étape 0${idx + 1}</span>
+              </div>
+              <h3>${st.title}</h3>
+              <p>${st.desc}</p>
+            </div>
+          `).join("")}
+        </div>`;
+    }
   },
 
-  /* 07 : CARTE D'EXPÉRIENCE */
+  /* SLIDE 07 : CARTE D'EXPÉRIENCE (TEMPLATE STRUCTURÉ ANIMÉ) */
   {
     num: "07",
-    kicker: "Experience Map · Parcours émotionnel",
-    title: "Carte d'expérience utilisateur",
-    icon: ICONS.heart,
+    kicker: "Experience Map · Parcours & Courbe mixte (- · - · -)",
+    title: "Carte d'expérience",
+    icon: SVG_ICONS.map,
+    onEnter: () => {
+      setTimeout(() => {
+        const path = document.getElementById("expCurvePath");
+        if (path) path.classList.add("drawn");
+      }, 150);
+    },
     render: () => `
-      <div class="exp-grid">
-        <div class="exp-col">
-          <div><div class="exp-step">1. Anticipation</div><h4 style="font-size:14px;margin-top:4px">11h45 · En cours</h4></div>
-          <div class="exp-emoji">🤔</div>
-          <p style="font-size:12.5px">Consulte les menus et crée un panier partagé avec son groupe.</p>
+      <div class="g2 stagger-item" style="margin-bottom:8px">
+        <div class="box box-dark" style="padding:11px 15px">
+          <h3>Brève description du persona</h3>
+          <p style="font-size:12px">Yassine El Amrani, 20 ans, stagiaire CMC Rabat, pause courte et budget 25 DH.</p>
         </div>
-        <div class="exp-col">
-          <div><div class="exp-step">2. Commande</div><h4 style="font-size:14px;margin-top:4px">11h52 · Validation</h4></div>
-          <div class="exp-emoji">😊</div>
-          <p style="font-size:12.5px">Rassuré par le prix total transparent et le créneau de 12h30.</p>
-        </div>
-        <div class="exp-col">
-          <div><div class="exp-step">3. Attente</div><h4 style="font-size:14px;margin-top:4px">12h15 · Préparation</h4></div>
-          <div class="exp-emoji">😐</div>
-          <p style="font-size:12.5px">Légère appréhension sur le timing, apaisée par la barre de suivi.</p>
-        </div>
-        <div class="exp-col">
-          <div><div class="exp-step">4. Réception</div><h4 style="font-size:14px;margin-top:4px">12h30 · Porte CMC</h4></div>
-          <div class="exp-emoji">🤩</div>
-          <p style="font-size:12.5px">Scan QR ultra-rapide, repas chaud reçu sans file d'attente.</p>
-        </div>
-        <div class="exp-col">
-          <div><div class="exp-step">5. Déjeuner</div><h4 style="font-size:14px;margin-top:4px">12h35 · Détente</h4></div>
-          <div class="exp-emoji">😌</div>
-          <p style="font-size:12.5px">Profite pleinement de sa pause et reprend l'atelier à l'heure.</p>
+        <div class="box box-gold" style="padding:11px 15px">
+          <h3>Objectif global</h3>
+          <p style="font-size:12px">Recevoir un repas abordable à 12h30 sans file d'attente ni retard en cours.</p>
         </div>
       </div>
 
-      <svg class="emotion-svg" viewBox="0 0 1000 90" preserveAspectRatio="none">
-        <line x1="0" y1="45" x2="1000" y2="45" stroke="#DCE8ED" stroke-dasharray="6 6" stroke-width="2"/>
-        <path d="M 100 50 Q 200 20, 300 28 T 500 55 T 700 15 T 900 18" fill="none" stroke="#3A9AB2" stroke-width="4" stroke-linecap="round"/>
-        <circle cx="100" cy="50" r="6" fill="#D4AF37"/>
-        <circle cx="300" cy="28" r="6" fill="#2EB88A"/>
-        <circle cx="500" cy="55" r="6" fill="#D4AF37"/>
-        <circle cx="700" cy="15" r="7" fill="#2EB88A"/>
-        <circle cx="900" cy="18" r="6" fill="#2EB88A"/>
-      </svg>
+      <div class="stagger-item" style="animation-delay:0.08s;font-size:11.5px;font-weight:900;text-transform:uppercase;color:var(--teal-deep);letter-spacing:0.8px">
+        Parcours de l'utilisateur
+      </div>
+      <div class="chevron-row stagger-item" style="animation-delay:0.12s">
+        <div class="chevron-step">Étape 1 · Précommander</div>
+        <div class="chevron-step">Étape 2 · Grouper & Payer</div>
+        <div class="chevron-step gold-chev">Étape 3 · Attente & Trajet</div>
+        <div class="chevron-step">Étape 4 · Retrait QR</div>
+      </div>
 
-      <div class="panel gold-panel" style="padding:12px 18px">
-        <p><b>Opportunité UX identifiée à l'étape 3 (Attente) :</b> Envoyer une notification proactive 5 minutes avant l'arrivée du livreur pour que le stagiaire descende au bon moment.</p>
+      <div class="exp-matrix-line stagger-item" style="animation-delay:0.18s">
+        <div class="row-label-box">Actions</div>
+        <div class="cell-mini">Choisit le snack et l'heure 12h30.</div>
+        <div class="cell-mini">Invite amis et valide le panier.</div>
+        <div class="cell-mini">Suit la préparation et le livreur.</div>
+        <div class="cell-mini">Présente le QR Code et récupère.</div>
+      </div>
+
+      <div class="exp-matrix-line stagger-item" style="animation-delay:0.24s">
+        <div class="row-label-box">Pensées</div>
+        <div class="cell-mini">« Je gagne du temps avant 12h30. »</div>
+        <div class="cell-mini">« Les frais partagés restent bas. »</div>
+        <div class="cell-mini">« Est-ce que le livreur sera à l'heure ? »</div>
+        <div class="cell-mini">« Rapide et net, je peux manger. »</div>
+      </div>
+
+      <div class="exp-matrix-line stagger-item" style="animation-delay:0.3s">
+        <div class="row-label-box">Expériences</div>
+        <div style="grid-column:span 4;background:#fff;border:1px solid var(--border-soft);border-radius:10px;padding:4px 8px">
+          <svg width="100%" height="44" viewBox="0 0 800 44" preserveAspectRatio="none">
+            <line x1="0" y1="22" x2="800" y2="22" stroke="#DCE8ED" stroke-width="1"/>
+            <path id="expCurvePath" class="trace-path" d="M 40 28 Q 140 8, 240 12 T 440 34 T 640 10 L 760 12" fill="none" stroke="#102A33" stroke-width="3" stroke-dasharray="14 6 3 6"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="exp-matrix-line stagger-item" style="animation-delay:0.36s;margin-bottom:4px">
+        <div class="row-label-box">Opportunités</div>
+        <div class="cell-mini">Menus « Pause Express » mis en avant.</div>
+        <div class="cell-mini">Lien d'invitation rapide de groupe.</div>
+        <div class="cell-mini">Alerte 5 min avant arrivée porte.</div>
+        <div class="cell-mini">Scan QR en un geste sans appel.</div>
+      </div>
+
+      <div class="stagger-item" style="animation-delay:0.4s;display:flex;align-items:center;gap:10px;font-size:11px;font-weight:900;color:var(--ink-dark)">
+        <span>TEMPS</span>
+        <div style="flex:1;height:3px;background:var(--ink-dark);position:relative">
+          <span style="position:absolute;right:0;top:-5px;font-size:11px">▶</span>
+        </div>
+        <span>11h45 → 12h32</span>
       </div>`
   },
 
-  /* 08 : PARCOURS UTILISATEUR */
+  /* SLIDE 08 : PARCOURS UTILISATEUR (MATRICE 5 ÉTAPES + ÉMOJIS + COURBE + SECONDAIRE) */
   {
     num: "08",
-    kicker: "User Journey · Flux nominal et cas limites",
-    title: "Parcours utilisateur (Principal & Secondaire)",
-    icon: ICONS.route,
+    kicker: "User Journey Map · Principal & Secondaire",
+    title: "Parcours utilisateur",
+    icon: SVG_ICONS.journey,
+    onEnter: () => {
+      setTimeout(() => {
+        const p = document.getElementById("journeyCurvePath");
+        if (p) p.classList.add("drawn");
+      }, 150);
+    },
     render: () => `
-      <div class="panel" style="margin-bottom:18px">
-        <h3>Parcours Principal (Happy Path — Commande standard ou groupée)</h3>
-        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:12px">
-          <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:12px;text-align:center">
-            <div style="width:28px;height:28px;border-radius:50%;background:var(--dark-ink);color:var(--gold);font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 6px">1</div>
-            <div style="font-size:12.5px;font-weight:700">Connexion Email CMC</div>
+      <div class="journey-meta-bar stagger-item">
+        <span>Nom du projet : <b>CMC Delivery</b></span>
+        <span>Date : <b>2026</b></span>
+      </div>
+
+      <div class="chev5 stagger-item" style="animation-delay:0.06s">
+        <div class="chevron-step">1. Connexion CMC</div>
+        <div class="chevron-step">2. Choix snack</div>
+        <div class="chevron-step">3. Panier groupe</div>
+        <div class="chevron-step gold-chev">4. Suivi trajet</div>
+        <div class="chevron-step">5. Retrait QR</div>
+      </div>
+
+      <div class="j-grid-row stagger-item" style="animation-delay:0.12s">
+        <div class="j-left-label">ACTIONS</div>
+        <div class="cell-mini">Entre son email @cmc.ac.ma.</div>
+        <div class="cell-mini">Filtre menus et délais campus.</div>
+        <div class="cell-mini">Partage le panier aux amis.</div>
+        <div class="cell-mini">Suit la préparation et l'arrivée.</div>
+        <div class="cell-mini">Montre le QR Code à la porte.</div>
+      </div>
+
+      <div class="mood-row stagger-item" style="animation-delay:0.18s">
+        <div style="display:flex;align-items:center;gap:6px">
+          <div class="j-left-label" style="flex:1">RESSENTIS</div>
+          <div class="mood-faces">
+            <span>😊</span>
+            <span>😐</span>
+            <span>😣</span>
           </div>
-          <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:12px;text-align:center">
-            <div style="width:28px;height:28px;border-radius:50%;background:var(--dark-ink);color:var(--gold);font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 6px">2</div>
-            <div style="font-size:12.5px;font-weight:700">Choix du snack & plats</div>
-          </div>
-          <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:12px;text-align:center">
-            <div style="width:28px;height:28px;border-radius:50%;background:var(--dark-ink);color:var(--gold);font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 6px">3</div>
-            <div style="font-size:12.5px;font-weight:700">Panier partagé (option)</div>
-          </div>
-          <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:12px;text-align:center">
-            <div style="width:28px;height:28px;border-radius:50%;background:var(--dark-ink);color:var(--gold);font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 6px">4</div>
-            <div style="font-size:12.5px;font-weight:700">Créneau 12h30 & Paiement</div>
-          </div>
-          <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:12px;text-align:center">
-            <div style="width:28px;height:28px;border-radius:50%;background:var(--dark-ink);color:var(--gold);font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 6px">5</div>
-            <div style="font-size:12.5px;font-weight:700">Suivi préparation & trajet</div>
-          </div>
-          <div style="background:#fff;border:1px solid var(--border-subtle);border-radius:12px;padding:12px;text-align:center">
-            <div style="width:28px;height:28px;border-radius:50%;background:var(--gold);color:var(--dark-ink);font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 6px">6</div>
-            <div style="font-size:12.5px;font-weight:700">Retrait QR Porte CMC</div>
-          </div>
+        </div>
+        <div style="background:#fff;border:1px solid var(--border-soft);border-radius:10px;padding:4px 8px">
+          <svg width="100%" height="76" viewBox="0 0 850 76" preserveAspectRatio="none">
+            <line x1="0" y1="16" x2="850" y2="16" stroke="#EEF3F5" stroke-width="1"/>
+            <line x1="0" y1="38" x2="850" y2="38" stroke="#EEF3F5" stroke-width="1"/>
+            <line x1="0" y1="60" x2="850" y2="60" stroke="#EEF3F5" stroke-width="1"/>
+            <path id="journeyCurvePath" class="trace-path" d="M 60 22 L 220 18 L 390 20 L 570 54 L 760 15" fill="none" stroke="#3A9AB2" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="60" cy="22" r="5" fill="#24A173"/>
+            <circle cx="220" cy="18" r="5" fill="#24A173"/>
+            <circle cx="390" cy="20" r="5" fill="#24A173"/>
+            <circle cx="570" cy="54" r="5" fill="#D94E5A"/>
+            <circle cx="760" cy="15" r="5" fill="#24A173"/>
+          </svg>
         </div>
       </div>
 
-      <div class="grid-3">
-        <div class="panel gold-panel">
-          <h3>Parcours Secondaire 1 · Rupture d'un plat</h3>
-          <p>Le snack signale l'indisponibilité → Notification instantanée → Le stagiaire accepte un plat équivalent ou reçoit un remboursement automatique.</p>
-        </div>
-        <div class="panel">
-          <h3>Parcours Secondaire 2 · Retardataire groupe</h3>
-          <p>Un camarade n'a pas validé son ajout avant l'heure limite → Le créateur du panier peut retirer l'absent en 1 clic pour ne pas retarder le groupe.</p>
-        </div>
-        <div class="panel">
-          <h3>Parcours Secondaire 3 · Retard livraison</h3>
-          <p>Si le délai dépasse +10 min sur le créneau annoncé → Alerte prioritaire et possibilité d'annulation sans frais avant départ.</p>
-        </div>
+      <div class="j-grid-row stagger-item" style="animation-delay:0.24s">
+        <div class="j-left-label">VOIX DE L'UTILISATEUR</div>
+        <div class="cell-mini">« Accès réservé au campus. »</div>
+        <div class="cell-mini">« Prix clairs dès le départ. »</div>
+        <div class="cell-mini">« On divise les frais ensemble. »</div>
+        <div class="cell-mini">« J'espère qu'il n'y a pas de retard. »</div>
+        <div class="cell-mini">« Livré à l'heure, parfait ! »</div>
+      </div>
+
+      <div class="box box-gold stagger-item" style="animation-delay:0.3s;padding:10px 14px">
+        <p style="font-size:12px"><b>Parcours secondaire (Commande groupée & Plat indisponible) :</b> Si un plat est en rupture avant préparation, le snack propose une alternative instantanée ; le stagiaire accepte en 1 clic ou est remboursé automatiquement, et les absents du groupe peuvent être retirés avant validation.</p>
       </div>`
   },
 
-  /* 09 : USER FLOW */
+  /* SLIDE 09 : USER FLOW (CERCLES VERTS = ACTIONS, RECTANGLES JAUNES = ÉCRANS, LOSANGES BLEUS = DÉCISIONS) */
   {
     num: "09",
-    kicker: "Architecture logique de l'application",
-    title: "User flow complet",
-    icon: ICONS.flow,
+    kicker: "Flux complet Stagiaire · Snack · Livreur",
+    title: "User flow",
+    icon: SVG_ICONS.flow,
     render: () => `
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <div class="flow-legend" style="margin-bottom:0">
-          <div class="leg-item"><span class="shape-circle"></span> Actions utilisateur</div>
-          <div class="leg-item"><span class="shape-rect"></span> Écrans / Interfaces</div>
-          <div class="leg-item"><span class="shape-diamond"></span> Décisions / Conditions</div>
-        </div>
-        <button class="top-btn" style="background:var(--dark-ink);color:#fff" onclick="openFlowZoom()">Agrandir le User Flow HD</button>
+      <div class="flow-legend stagger-item">
+        <span class="leg-badge"><span class="dot-green"></span> Cercles verts = Actions</span>
+        <span class="leg-badge"><span class="rect-yellow"></span> Rectangles jaunes = Écrans</span>
+        <span class="leg-badge"><span class="diamond-blue"></span> Losanges bleus = Décisions</span>
       </div>
 
-      <div class="flow-canvas" id="flowDiagramBox">
-        <img src="user-flow-hd.png" alt="User Flow HD" style="max-width:100%;max-height:360px;display:none;margin:0 auto" onload="this.style.display='block';document.getElementById('vectorFlow').style.display='none'">
-        <div id="vectorFlow">
-          <div class="flow-track">
-            <span class="node-action">Ouvrir l'app</span><span class="f-arrow">→</span>
-            <span class="node-decision">Session active ?</span><span class="f-arrow">→</span>
-            <span class="node-screen">Connexion Email CMC</span><span class="f-arrow">→</span>
-            <span class="node-screen">Liste Snacks Campus</span><span class="f-arrow">→</span>
-            <span class="node-screen">Menu du Snack</span><span class="f-arrow">→</span>
-            <span class="node-action">Ajouter au panier</span>
-          </div>
-          <div class="flow-track">
-            <span class="node-screen">Mon Panier</span><span class="f-arrow">→</span>
-            <span class="node-decision">Commande groupée ?</span><span class="f-arrow">→</span>
-            <span class="node-action">Inviter camarades</span><span class="f-arrow">→</span>
-            <span class="node-screen">Créneau 12h30 & Point CMC</span><span class="f-arrow">→</span>
-            <span class="node-decision">Paiement accepté ?</span><span class="f-arrow">→</span>
-            <span class="node-screen">Dashboard Snack</span>
-          </div>
-          <div class="flow-track" style="margin-bottom:0">
-            <span class="node-decision">Plats dispo ?</span><span class="f-arrow">→</span>
-            <span class="node-action">Préparer commande</span><span class="f-arrow">→</span>
-            <span class="node-screen">Mission Livreur</span><span class="f-arrow">→</span>
-            <span class="node-screen">Suivi en direct</span><span class="f-arrow">→</span>
-            <span class="node-action">Scanner QR Code</span><span class="f-arrow">→</span>
-            <span class="node-screen">Réception confirmée</span>
-          </div>
+      <div class="flow-box-area stagger-item" style="animation-delay:0.1s">
+        <div class="flow-line">
+          <span class="f-circle">Ouvrir l'app</span>
+          <span class="f-arr">→</span>
+          <span class="f-rect">Écran d'accueil</span>
+          <span class="f-arr">→</span>
+          <span class="f-diamond">Session active ?</span>
+          <span class="f-arr">→ (Non) →</span>
+          <span class="f-rect">Connexion Email CMC</span>
+          <span class="f-arr">→</span>
+          <span class="f-circle">Saisir identifiants</span>
+          <span class="f-arr">→</span>
+          <span class="f-diamond">Identifiants valides ?</span>
+        </div>
+
+        <div class="flow-line">
+          <span class="f-rect">Liste des snacks du campus</span>
+          <span class="f-arr">→</span>
+          <span class="f-circle">Choisir un snack</span>
+          <span class="f-arr">→</span>
+          <span class="f-rect">Menu du snack</span>
+          <span class="f-arr">→</span>
+          <span class="f-circle">Ajouter plats au panier</span>
+          <span class="f-arr">→</span>
+          <span class="f-rect">Mon panier</span>
+          <span class="f-arr">→</span>
+          <span class="f-diamond">Commande groupée ?</span>
+        </div>
+
+        <div class="flow-line">
+          <span class="f-circle">Créer panier partagé & inviter</span>
+          <span class="f-arr">→</span>
+          <span class="f-rect">Créneau pause & Point CMC</span>
+          <span class="f-arr">→</span>
+          <span class="f-rect">Récapitulatif & Paiement</span>
+          <span class="f-arr">→</span>
+          <span class="f-diamond">Paiement accepté ?</span>
+          <span class="f-arr">→</span>
+          <span class="f-rect">Tableau de bord Snack</span>
+          <span class="f-arr">→</span>
+          <span class="f-diamond">Plats disponibles ?</span>
+        </div>
+
+        <div class="flow-line" style="margin-bottom:0">
+          <span class="f-circle">Préparer & marquer prête</span>
+          <span class="f-arr">→</span>
+          <span class="f-rect">Mission livreur</span>
+          <span class="f-arr">→</span>
+          <span class="f-circle">Livrer au point CMC</span>
+          <span class="f-arr">→</span>
+          <span class="f-rect">Suivi en direct</span>
+          <span class="f-arr">→</span>
+          <span class="f-circle">Scanner QR Code</span>
+          <span class="f-arr">→</span>
+          <span class="f-rect">Réception confirmée</span>
         </div>
       </div>`
   },
 
-  /* 10 : PROTOTYPE & WIREFRAMES */
+  /* SLIDE 10 : WIREFRAMES (MAQUETTES FILAIRES LOW-FI — SANS UI) */
   {
     num: "10",
-    kicker: "Maquettes basse fidélité (Wireframes UX)",
-    title: "Prototype : les 5 écrans clés",
-    icon: ICONS.phone,
+    kicker: "Basse fidélité (Low-Fi) · 5 écrans clés",
+    title: "Wireframes",
+    icon: SVG_ICONS.wireframe,
+    onEnter: () => selectWireframe(0),
     render: () => `
-      <div class="proto-wrapper">
-        <div class="screen-selector">
-          ${PROTO_SCREENS.map((s, idx) => `
-            <button class="scr-btn ${idx === 0 ? "active" : ""}" id="scrBtn_${idx}" onclick="selectProtoScreen(${idx})">
-              <small>${s.step}</small>
-              <strong>${s.name}</strong>
+      <div class="wf-container">
+        <div class="wf-menu stagger-item">
+          ${WIREFRAMES.map((wf, idx) => `
+            <button class="wf-tab-btn ${idx === 0 ? "active" : ""}" id="wfTab_${idx}" onclick="selectWireframe(${idx})">
+              <small>${wf.tag}</small>
+              <strong>${wf.title}</strong>
             </button>
           `).join("")}
         </div>
-        <div class="proto-stage" id="protoStage"></div>
-      </div>`,
-    onEnter: () => selectProtoScreen(0)
+        <div class="wf-display stagger-item" style="animation-delay:0.08s" id="wfDisplayArea"></div>
+      </div>`
   }
 ];
 
-let currentSlide = 0;
+let currentIdx = 0;
+window._empathyActive = false;
+let empathyViewMode = "persona";
 
-function renderSlide(direction = "next") {
-  const card = document.getElementById("slideCard");
-  const slide = SLIDES[currentSlide];
-
-  card.classList.remove("prev-anim");
-  void card.offsetWidth;
-  if (direction === "prev") card.classList.add("prev-anim");
-
-  if (slide.isCover) {
-    card.innerHTML = slide.render();
-  } else {
-    card.innerHTML = `
-      <div class="slide-header">
-        <div class="header-left">
-          <span class="num-badge">${slide.num}</span>
-          <div>
-            <div class="slide-kicker">${slide.kicker}</div>
-            <h2 class="slide-title">${slide.title}</h2>
-          </div>
-        </div>
-        <div class="dark-icon-circle">${slide.icon}</div>
-      </div>
-      <div class="slide-body">${slide.render()}</div>
-    `;
-  }
-
-  document.getElementById("slideCounter").textContent = `${String(currentSlide).padStart(2, "0")} / 10`;
-  document.getElementById("progressFill").style.width = `${(currentSlide / (SLIDES.length - 1)) * 100}%`;
-  document.getElementById("prevBtn").disabled = currentSlide === 0;
-  document.getElementById("nextBtn").disabled = currentSlide === SLIDES.length - 1;
-
-  if (typeof slide.onEnter === "function") slide.onEnter();
-}
-
-function selectProtoScreen(idx) {
-  PROTO_SCREENS.forEach((_, i) => {
-    const btn = document.getElementById(`scrBtn_${i}`);
+function selectWireframe(idx) {
+  WIREFRAMES.forEach((_, i) => {
+    const btn = document.getElementById("wfTab_" + i);
     if (btn) btn.classList.toggle("active", i === idx);
   });
-  const scr = PROTO_SCREENS[idx];
-  const stage = document.getElementById("protoStage");
-  if (!stage) return;
-  stage.innerHTML = `
-    <div class="phone-frame" title="Cliquez pour zoomer" style="cursor:zoom-in" onclick="zoomPhoneScreen(${idx})">
-      <img class="real-screen" src="${scr.img}" alt="${scr.name}" onerror="this.style.display='none'">
-      ${scr.wireframeHTML}
-    </div>
+  const wf = WIREFRAMES[idx];
+  const area = document.getElementById("wfDisplayArea");
+  if (!area) return;
+  area.innerHTML = `
+    <div class="lofi-phone">${wf.screenHtml}</div>
     <div>
-      <span class="num-badge" style="font-size:12px;padding:5px 10px">${scr.step}</span>
-      <h3 style="font-size:22px;font-weight:900;margin:10px 0 8px;color:var(--dark-ink)">${scr.name}</h3>
-      <p style="font-size:14.5px;color:var(--text-body);line-height:1.55;margin-bottom:14px">${scr.desc}</p>
-      <div class="panel" style="background:#fff">
-        <h3>Choix ergonomiques & UX</h3>
-        <ul>${scr.uxPoints.map(pt => `<li>${pt}</li>`).join("")}</ul>
-      </div>
-      <div style="margin-top:12px;font-size:12px;color:var(--bg-teal);font-weight:700">
-        Astuce : Cliquez sur l'écran mobile pour l'afficher en grand format.
+      <span class="gold-num" style="font-size:11.5px;padding:4px 10px">${wf.tag} · Low-Fidelity UX</span>
+      <h3 style="font-size:20px;font-weight:900;margin:8px 0 6px;color:var(--ink-dark)">${wf.title}</h3>
+      <p style="font-size:13.5px;color:var(--ink-body);line-height:1.45;margin-bottom:12px">${wf.summary}</p>
+      <div class="box" style="background:#fff">
+        <h3>Annotations UX (Ergonomie & Structure)</h3>
+        <ul>${wf.notes.map(n => `<li>${n}</li>`).join("")}</ul>
       </div>
     </div>
   `;
 }
 
-function zoomPhoneScreen(idx) {
-  const scr = PROTO_SCREENS[idx];
-  const body = document.getElementById("zoomBody");
-  body.innerHTML = `
-    <button class="close-zoom" onclick="closeZoom()">Fermer ✕</button>
-    <h3 style="margin-bottom:14px;color:var(--dark-ink)">${scr.step} — ${scr.name}</h3>
-    <div style="display:flex;justify-content:center;padding:10px">
-      <div class="phone-frame" style="width:320px;height:550px;transform:scale(1.02)">
-        <img class="real-screen" src="${scr.img}" alt="${scr.name}" onerror="this.style.display='none'">
-        ${scr.wireframeHTML}
+function switchPersonaView(mode) {
+  empathyViewMode = mode;
+  const tabP = document.getElementById("tabPersona");
+  const tabE = document.getElementById("tabEmpathy");
+  const box = document.getElementById("personaViewContainer");
+  if (!box) return;
+
+  if (tabP) tabP.classList.toggle("active", mode === "persona");
+  if (tabE) tabE.classList.toggle("active", mode === "empathy");
+
+  if (mode === "persona") {
+    window._empathyActive = false;
+    box.innerHTML = `
+      <div class="persona-grid">
+        <div class="persona-card-left">
+          <div class="avatar-ring">
+            <img src="persona.png" alt="Yassine El Amrani" onerror="this.style.display='none'">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+          <div style="font-size:18px;font-weight:900">Yassine El Amrani</div>
+          <div style="font-size:12px;color:var(--gold);font-weight:700;margin:3px 0 10px">20 ans · Stagiaire en Digital Design à la CMC Rabat</div>
+          <p style="font-size:11.5px;color:#C2DCE6;line-height:1.45">
+            Stagiaire à la CMC Rabat (Tamesna), il suit des modules pratiques et gère son budget étudiant au quotidien.
+          </p>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="box box-dark" style="padding:11px 15px">
+            <h3>Problématique personnelle du Persona</h3>
+            <p style="font-size:12.5px">Lors de sa pause de 30 à 45 minutes, Yassine n'a pas le temps de marcher loin ni d'attendre en file, et il veut éviter les frais de livraison trop élevés pour un budget de 25 DH.</p>
+          </div>
+          <div class="g2">
+            <div class="box" style="padding:12px 14px">
+              <h3>Bio & Objectifs clés</h3>
+              <p style="font-size:12px"><b>Bio :</b> Utilise son smartphone entre les séances pour s'organiser avec ses camarades.<br><b>Objectifs :</b> Manger à l'heure, respecter son budget (20–30 DH) et ne pas rater la reprise.</p>
+            </div>
+            <div class="box box-gold" style="padding:12px 14px">
+              <h3>Frustrations & Attentes</h3>
+              <p style="font-size:12px"><b>Frustrations :</b> Files d'attente, frais élevés, retards.<br><b>Attentes :</b> Précommande à 12h30, panier groupé, suivi direct et retrait QR Code.</p>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  } else {
+    window._empathyActive = true;
+    box.innerHTML = `
+      <div class="empathy-stage">
+        <div class="empathy-center">
+          <div class="avatar-ring" style="width:86px;height:86px">
+            <img src="persona.png" alt="Yassine El Amrani" onerror="this.style.display='none'">
+            <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+          <div style="font-size:13.5px;font-weight:900">Yassine El Amrani</div>
+          <div style="font-size:11px;color:var(--ink-muted);font-weight:700">Stagiaire CMC Rabat</div>
+        </div>
+
+        <div class="empathy-capsules-wrap">
+          <svg class="empathy-svg" viewBox="0 0 760 430" preserveAspectRatio="none">
+            <defs>
+              <marker id="arrTeal" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#246E82"/>
+              </marker>
+            </defs>
+            <path id="ea1" class="dash-arrow" d="M 10 175 Q 110 70, 175 55" fill="none" stroke="#246E82" stroke-width="2.2" marker-end="url(#arrTeal)"/>
+            <path id="ea2" class="dash-arrow" d="M 10 175 Q 250 40, 405 55" fill="none" stroke="#2B8CBE" stroke-width="2.2" marker-end="url(#arrTeal)"/>
+            <path id="ea3" class="dash-arrow" d="M 10 190 L 175 190" fill="none" stroke="#D4AF37" stroke-width="2.2" marker-end="url(#arrTeal)"/>
+            <path id="ea4" class="dash-arrow" d="M 10 190 Q 220 190, 405 190" fill="none" stroke="#24A173" stroke-width="2.2" marker-end="url(#arrTeal)"/>
+            <path id="ea5" class="dash-arrow" d="M 10 205 Q 110 340, 175 365" fill="none" stroke="#D94E5A" stroke-width="2.2" marker-end="url(#arrTeal)"/>
+            <path id="ea6" class="dash-arrow" d="M 10 205 Q 250 360, 405 365" fill="none" stroke="#24A173" stroke-width="2.2" marker-end="url(#arrTeal)"/>
+          </svg>
+
+          <div class="emp-capsule cap-dit" id="ec1"><h4>Ce qu'il dit</h4><p>« On n'a que 30 à 45 min de pause, il faut commander vite et à petit prix. »</p></div>
+          <div class="emp-capsule cap-pense" id="ec2"><h4>Ce qu'il pense</h4><p>« Si je commande avec mes camarades, on paiera moins de livraison. »</p></div>
+          <div class="emp-capsule cap-voit" id="ec3"><h4>Ce qu'il voit</h4><p>Des files d'attente à midi et des camarades qui mangent sur le pouce.</p></div>
+          <div class="emp-capsule cap-ressent" id="ec4"><h4>Ce qu'il ressent</h4><p>Stress du timing à 12h15, mais soulagement quand tout arrive à l'heure.</p></div>
+          <div class="emp-capsule cap-pains" id="ec5"><h4>Pains</h4><p>Attente longue, frais élevés en solo, hésitation sur l'heure de remise.</p></div>
+          <div class="emp-capsule cap-gains" id="ec6"><h4>Gains</h4><p>Précommande horodatée, panier partagé et retrait QR à la porte CMC.</p></div>
+        </div>
+      </div>`;
+    runEmpathyAnimation();
+  }
+}
+
+function runEmpathyAnimation() {
+  for (let i = 1; i <= 6; i++) {
+    const arrow = document.getElementById("ea" + i);
+    const cap = document.getElementById("ec" + i);
+    if (arrow) arrow.classList.remove("drawn");
+    if (cap) cap.classList.remove("show");
+    setTimeout(() => {
+      if (arrow) arrow.classList.add("drawn");
+      if (cap) cap.classList.add("show");
+    }, i * 140);
+  }
+}
+
+function renderSlide(animType = "anim-next") {
+  const card = document.getElementById("slideCard");
+  const slide = SLIDES[currentIdx];
+
+  card.classList.remove("anim-next", "anim-prev", "anim-replay");
+  void card.offsetWidth;
+  card.classList.add(animType);
+
+  if (slide.isSommaire) {
+    card.innerHTML = slide.render();
+  } else {
+    card.innerHTML = `
+      <div class="slide-head">
+        <div class="slide-head-left">
+          <span class="gold-num">${slide.num}</span>
+          <div>
+            <div class="slide-kicker">${slide.kicker}</div>
+            <h2 class="slide-title">${slide.title}</h2>
+          </div>
+        </div>
+        <div class="dark-badge-icon">${slide.icon}</div>
       </div>
-    </div>`;
-  document.getElementById("zoomModal").classList.add("open");
-}
+      <div class="slide-body">${slide.render()}</div>
+    `;
+  }
 
-function openFlowZoom() {
-  const box = document.getElementById("flowDiagramBox").innerHTML;
-  document.getElementById("zoomBody").innerHTML = `
-    <button class="close-zoom" onclick="closeZoom()">Fermer ✕</button>
-    <h3 style="margin-bottom:14px;color:var(--dark-ink)">User Flow Complet — Application Livraison CMC Rabat</h3>
-    <div style="min-width:860px;padding:10px">${box}</div>`;
-  document.getElementById("zoomModal").classList.add("open");
-}
+  document.getElementById("slideIndicator").textContent = `Slide ${currentIdx} / 10`;
+  document.getElementById("topProgressBar").style.width = `${(currentIdx / (SLIDES.length - 1)) * 100}%`;
+  document.getElementById("prevBtn").disabled = currentIdx === 0;
+  document.getElementById("nextBtn").disabled = currentIdx === SLIDES.length - 1;
 
-function closeZoom() {
-  document.getElementById("zoomModal").classList.remove("open");
+  if (currentIdx === 4) {
+    switchPersonaView(empathyViewMode);
+  } else {
+    window._empathyActive = false;
+  }
+
+  if (typeof slide.onEnter === "function") {
+    slide.onEnter();
+  }
 }
 
 function nextSlide() {
-  if (currentSlide < SLIDES.length - 1) {
-    currentSlide++;
-    renderSlide("next");
+  if (currentIdx < SLIDES.length - 1) {
+    currentIdx++;
+    renderSlide("anim-next");
   }
 }
 
 function prevSlide() {
-  if (currentSlide > 0) {
-    currentSlide--;
-    renderSlide("prev");
+  if (currentIdx > 0) {
+    currentIdx--;
+    renderSlide("anim-prev");
   }
 }
 
-function goToSlide(index) {
-  const dir = index >= currentSlide ? "next" : "prev";
-  currentSlide = index;
-  renderSlide(dir);
+function goToSlide(idx) {
+  const anim = idx >= currentIdx ? "anim-next" : "anim-prev";
+  currentIdx = idx;
+  renderSlide(anim);
 }
 
-function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen?.();
-  } else {
-    document.exitFullscreen?.();
-  }
+function replayCurrentAnimation() {
+  renderSlide("anim-replay");
 }
 
 document.addEventListener("keydown", (e) => {
-  if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); nextSlide(); }
-  else if (e.key === "ArrowLeft") { e.preventDefault(); prevSlide(); }
-  else if (e.key === "Escape") closeZoom();
-  else if (e.key === "f" || e.key === "F") toggleFullscreen();
+  if (e.key === "ArrowRight") {
+    e.preventDefault();
+    nextSlide();
+  } else if (e.key === "ArrowLeft") {
+    e.preventDefault();
+    prevSlide();
+  } else if (e.key === "r" || e.key === "R") {
+    replayCurrentAnimation();
+  }
 });
 
-renderSlide("next");
+renderSlide("anim-next");
 </script>
 </body>
 </html>
