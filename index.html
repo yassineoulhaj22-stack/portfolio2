@@ -2,72 +2,365 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>UX Design : Livraison Campus CMC Rabat</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Étude UX Design — Application de Livraison CMC Rabat</title>
 <style>
   :root {
-    --bg-main: #2d5a3c; --bg-accent: #4c8c58;
-    --crust: #3b2416; --bread: #d9822b;
-    --fruit: #d94e4e; --citrus: #f2b705;
-    --cream: #fffcf7; --light: #f6efe6;
+    --bg-teal: #3A9AB2;
+    --bg-teal-dark: #256D80;
+    --card-bg: #FFFFFF;
+    --dark-ink: #102A33;
+    --text-body: #334E58;
+    --text-muted: #627D87;
+    --gold: #D4AF37;
+    --gold-light: #FBF6E6;
+    --accent-grad: linear-gradient(135deg, #5B6CF9 0%, #3A9AB2 55%, #2EB88A 100%);
+    --soft-surface: #F2F7F9;
+    --border-subtle: #DCE8ED;
+    --flow-action: #2EB88A;
+    --flow-screen: #F4C430;
+    --flow-decision: #3A9AB2;
+    --radius-card: 24px;
+    --shadow-card: 0 24px 60px rgba(16, 42, 51, 0.25);
   }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: "Segoe UI", sans-serif; background: var(--bg-main); color: var(--crust); height: 100vh; overflow: hidden; }
-  
-  /* Container Reels Vertical */
-  .reels-container { height: 100vh; overflow-y: scroll; scroll-snap-type: y mandatory; }
-  .slide { height: 100vh; scroll-snap-align: start; display: flex; align-items: center; justify-content: center; padding: 20px; }
-  
-  /* Style Carte */
-  .wf-card { width: 100%; max-width: 400px; background: var(--cream); border-radius: 24px; padding: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-  .wf-img { background: #eee; height: 120px; display: flex; align-items: center; justify-content: center; border: 2px dashed #999; margin-bottom: 20px; border-radius: 12px; }
-  h1 { font-size: 28px; margin-bottom: 15px; color: var(--crust); }
-  .box { background: var(--light); padding: 15px; border-radius: 15px; margin-top: 10px; }
-  .btn { background: var(--bread); color: white; padding: 12px; text-align: center; font-weight: bold; border-radius: 10px; margin-top: 15px; }
-</style>
-</head>
-<body>
 
-<div class="reels-container">
-  <!-- Slide 0: Cover -->
-  <div class="slide"><div class="wf-card" style="background:var(--crust); color:var(--cream)">
-    <h1>Livraison CMC Rabat</h1>
-    <p>App de livraison entre Stagiaires, Snacks et Livreurs.</p>
-  </div></div>
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+    background: radial-gradient(circle at 15% 15%, #4BB3CC 0%, var(--bg-teal) 55%, var(--bg-teal-dark) 100%);
+    color: var(--dark-ink);
+    user-select: none;
+  }
 
-  <!-- Slide 1: Sommaire -->
-  <div class="slide"><div class="wf-card">
-    <h1>Sommaire</h1>
-    <ul style="padding-left:20px">
-      <li>01. Problématique</li><li>02. Recherche qualitative</li><li>03. Recherche quantitative</li>
-      <li>04. Persona</li><li>05. Objectifs & solutions</li><li>06. Scénarios</li>
-      <li>07. Carte d'expérience</li><li>08. Parcours utilisateur</li><li>09. User flow</li><li>10. Prototype</li>
-    </ul>
-  </div></div>
+  /* Motifs géométriques subtils en arrière-plan */
+  .ambient-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .ambient-bg::before, .ambient-bg::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.07);
+  }
+  .ambient-bg::before { width: 520px; height: 520px; top: -160px; right: -120px; }
+  .ambient-bg::after { width: 420px; height: 420px; bottom: -140px; left: -100px; }
 
-  <!-- Slide 4: Persona -->
-  <div class="slide"><div class="wf-card">
-    <h1>Persona : Stagiaire CMC</h1>
-    <div class="wf-img">Photo Youssef</div>
-    <h3>Youssef, 22 ans</h3>
-    <div class="box">
-      <p><b>Profil :</b> Stagiaire CMC Rabat (Tamesna).</p>
-      <p><b>Frustrations :</b> Files d'attente, perte de temps, budget serré.</p>
-      <p><b>Besoins :</b> Précommande, commande groupée, point de retrait rapide.</p>
-    </div>
-  </div></div>
+  /* Barre supérieure */
+  .topbar {
+    position: relative;
+    z-index: 10;
+    height: 64px;
+    padding: 0 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff;
+  }
+  .brand-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 0.4px;
+    background: rgba(16, 42, 51, 0.22);
+    padding: 8px 16px;
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+  }
+  .brand-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+  .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .slide-counter {
+    font-size: 13px;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.16);
+    padding: 7px 14px;
+    border-radius: 999px;
+  }
+  .top-btn {
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    color: #fff;
+    padding: 7px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .top-btn:hover {
+    background: #fff;
+    color: var(--dark-ink);
+  }
+  .top-btn.gold-btn {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: var(--dark-ink);
+  }
+  .top-btn.gold-btn:hover {
+    background: #e8c348;
+  }
 
-  <!-- Slide 10: Prototype -->
-  <div class="slide"><div class="wf-card">
-    <h1>Prototype Suivi</h1>
-    <div class="wf-img">QR CODE</div>
-    <div class="box">
-      <p><b>Statut :</b> En préparation</p>
-      <p><b>Lieu :</b> Porte Principale CMC</p>
-    </div>
-    <div class="btn">Retour à l'accueil</div>
-  </div></div>
-</div>
+  /* Scène principale */
+  .viewport {
+    position: relative;
+    z-index: 5;
+    height: calc(100vh - 132px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 36px;
+    perspective: 1600px;
+  }
 
-</body>
-</html>
+  .slide-card {
+    width: 100%;
+    max-width: 1260px;
+    height: 100%;
+    max-height: 700px;
+    background: var(--card-bg);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    padding: 36px 46px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    animation: slideMorphIn 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .slide-card.prev-anim {
+    animation: slideMorphPrev 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @keyframes slideMorphIn {
+    0% {
+      opacity: 0;
+      transform: translateX(70px) rotateY(-8deg) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) rotateY(0deg) scale(1);
+    }
+  }
+
+  @keyframes slideMorphPrev {
+    0% {
+      opacity: 0;
+      transform: translateX(-70px) rotateY(8deg) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0) rotateY(0deg) scale(1);
+    }
+  }
+
+  /* En-tête de slide */
+  .slide-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1.5px solid var(--border-subtle);
+    flex-shrink: 0;
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .num-badge {
+    background: var(--gold);
+    color: var(--dark-ink);
+    font-weight: 900;
+    font-size: 16px;
+    padding: 8px 14px;
+    border-radius: 12px;
+    letter-spacing: 0.5px;
+    box-shadow: 0 6px 14px rgba(212, 175, 55, 0.3);
+  }
+  .slide-kicker {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    color: var(--bg-teal);
+  }
+  .slide-title {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--dark-ink);
+    line-height: 1.15;
+  }
+  .dark-icon-circle {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: var(--dark-ink);
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .slide-body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  .slide-body::-webkit-scrollbar { width: 6px; }
+  .slide-body::-webkit-scrollbar-thumb { background: #CBDCE2; border-radius: 10px; }
+
+  /* Grilles & Cartes internes */
+  .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+  .panel {
+    background: var(--soft-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 18px;
+    padding: 20px;
+  }
+  .panel.dark-panel {
+    background: var(--dark-ink);
+    color: #fff;
+    border: none;
+  }
+  .panel.gold-panel {
+    background: var(--gold-light);
+    border: 1px solid rgba(212, 175, 55, 0.45);
+  }
+  .panel h3 {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: var(--dark-ink);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel.dark-panel h3 { color: var(--gold); }
+  .panel p, .panel li {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text-body);
+  }
+  .panel.dark-panel p { color: #E2EEF2; }
+  .panel ul { padding-left: 18px; }
+
+  /* SLIDE 0 : COUVERTURE & SOMMAIRE */
+  .cover-layout {
+    display: grid;
+    grid-template-columns: 1.05fr 1.25fr;
+    gap: 28px;
+    height: 100%;
+    align-items: center;
+  }
+  .hero-box {
+    background: var(--dark-ink);
+    color: #fff;
+    border-radius: 22px;
+    padding: 32px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-box::after {
+    content: "";
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: var(--accent-grad);
+    opacity: 0.22;
+    bottom: -70px;
+    right: -70px;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(212, 175, 55, 0.2);
+    color: var(--gold);
+    border: 1px solid rgba(212, 175, 55, 0.45);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero-title {
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1.18;
+    margin-bottom: 14px;
+  }
+  .hero-sub {
+    font-size: 15px;
+    color: #B8D4DE;
+    line-height: 1.55;
+    margin-bottom: 20px;
+  }
+  .actor-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .actor-chip {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .sommaire-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 11px;
+  }
+  .som-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--soft-surface);
+    border: 1px solid var(--border-subtle);
+    padding: 11px 14px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+  }
+  .som-item:hover {
+    transform: translateY(-2px);
+    border-color: var(--bg-teal);
+    background: #E8F4F8;
+  }
+  .som-num {
+    background: var(--gold);
+    color: var(--dark-ink);
+    font-weight:
